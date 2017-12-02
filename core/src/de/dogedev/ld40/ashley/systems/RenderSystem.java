@@ -82,7 +82,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
         if (ComponentMappers.position.has(e)) {
             PositionComponent positionComponent = ComponentMappers.position.get(e);
 
-            drawRotated(renderComponent.region, positionComponent.x - renderComponent.region.getRegionWidth() / 2, positionComponent.y - renderComponent.region.getRegionHeight() / 2, positionComponent.rotation-90);
+            drawRotated(renderComponent.region, positionComponent.x - renderComponent.region.getRegionWidth() / 2, positionComponent.y - renderComponent.region.getRegionHeight() / 2, positionComponent.rotation);
         }
     }
 

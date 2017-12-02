@@ -1,11 +1,14 @@
 package de.dogedev.ld40.screens;
 
+import box2dLight.ConeLight;
+import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
@@ -31,8 +34,11 @@ public class GameScreen extends ScreenAdapter {
     private ImmutableArray<Entity> dirtyEntities;
     private Box2DDebugRenderer debugRenderer;
     private World world;
+    private RayHandler rayHandler;
 
     PhysicsComponent physicsComponent;
+    private ConeLight coneLight;
+
     public GameScreen() {
         init();
     }
@@ -56,25 +62,36 @@ public class GameScreen extends ScreenAdapter {
         dirtyEntities = ashley.getEntitiesFor(Family.all(DirtyComponent.class).get());
 
         world = new World(new Vector2(0, 0), false);
+
+//        RayHandler.setGammaCorrection(true);
+//        RayHandler.useDiffuseLight(true);
+
+        rayHandler = new RayHandler(world);
+//        rayHandler.setAmbientLight(.1f, 0.1f, 0.1f, 0.5f);
+//        rayHandler.setBlurNum(3);
+        rayHandler.setShadows(false);
+
+        coneLight = new ConeLight(rayHandler, 128, new Color(1, 1, 1, 1), 120, 50, 50, 0, 20);
         ashley.addSystem(new PhysicsSystem(world, 1));
 
         world.setContactListener(new AshleyB2DContactListener());
 
-        EntityFactory.createEnemy(world, new Vector2(50, 100), MathUtils.PI / 1.323f);
-        Entity enemy = EntityFactory.createEnemy(world, new Vector2(50, 50), MathUtils.PI / 1.323f);
+        for (int i = 0; i < 5; i++) {
+            EntityFactory.createEnemy(world, new Vector2(MathUtils.random(0, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER), MathUtils.random(0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER)), MathUtils.random(0, MathUtils.degreesToRadians * 180));
+        }
+        Entity enemy = EntityFactory.createEnemy(world, new Vector2(50, 50), 0);
         physicsComponent = ComponentMappers.physics.get(enemy);
 
         // Create our body definition
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(new Vector2(0, 1));
-        Body groundBody = world.createBody(groundBodyDef);
-//
-        PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(camera.viewportWidth, 1.0f);
-        groundBody.createFixture(groundBox, 0.0f);
-        groundBox.dispose();
-        physicsComponent.body.setLinearDamping(1);
-        physicsComponent.body.setAngularDamping(1);
+//        BodyDef groundBodyDef = new BodyDef();
+//        groundBodyDef.position.set(new Vector2(0, 1));
+//        Body groundBody = world.createBody(groundBodyDef);
+////
+//        PolygonShape groundBox = new PolygonShape();
+//        groundBox.setAsBox(camera.viewportWidth, 1.0f);
+//        groundBody.createFixture(groundBox, 0.0f);
+//        groundBox.dispose();
+
 
         debugRenderer = new Box2DDebugRenderer();
 
@@ -87,8 +104,11 @@ public class GameScreen extends ScreenAdapter {
 
         ashley.update(delta);
         debugRenderer.render(world, debugCamera.combined);
+        rayHandler.setCombinedMatrix(debugCamera);
+        rayHandler.updateAndRender();
 
-
+        coneLight.setDirection(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
+        coneLight.setPosition(physicsComponent.body.getPosition());
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
         }
@@ -121,6 +141,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        rayHandler.dispose();
 //        batch.dispose();
     }
 }

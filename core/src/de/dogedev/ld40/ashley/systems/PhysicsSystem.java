@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -54,8 +55,23 @@ public class PhysicsSystem extends EntitySystem {
                 physicsComponent = ComponentMappers.physics.get(entity);
                 positionComponent = ComponentMappers.position.get(entity);
                 Vector2 position = physicsComponent.body.getPosition();
+
+                if(position.x > Gdx.graphics.getWidth() / PIXEL_PER_METER) {
+                    physicsComponent.body.setTransform(0, position.y, physicsComponent.body.getAngle());
+                }
+                if(position.x < 0) {
+                    physicsComponent.body.setTransform(Gdx.graphics.getWidth() / PIXEL_PER_METER, position.y, physicsComponent.body.getAngle());
+                }
+                if(position.y > Gdx.graphics.getHeight() / PIXEL_PER_METER) {
+                    physicsComponent.body.setTransform(position.x, 0, physicsComponent.body.getAngle());
+                }
+                if(position.y < 0) {
+                    physicsComponent.body.setTransform(position.x, Gdx.graphics.getHeight() / PIXEL_PER_METER, physicsComponent.body.getAngle());
+                }
+
                 positionComponent.x = position.x * PIXEL_PER_METER;
                 positionComponent.y = position.y * PIXEL_PER_METER;
+
                 positionComponent.rotation = physicsComponent.body.getAngle() * MathUtils.radiansToDegrees;
             }
         }

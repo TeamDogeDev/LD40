@@ -38,6 +38,9 @@ public class EntityFactory {
         physicsComponent.body = world.createBody(entityBody);
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
+        physicsComponent.body.setLinearDamping(1);
+        physicsComponent.body.setAngularDamping(1);
+
         entityShape.dispose();
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);

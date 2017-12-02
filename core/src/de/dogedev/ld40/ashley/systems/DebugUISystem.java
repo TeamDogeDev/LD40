@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
  */
 public class DebugUISystem extends EntitySystem implements Disposable {
 
-    private final GLProfiler glProfiler;
+//    private final GLProfiler glProfiler;
     private SpriteBatch batch = new SpriteBatch();
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -28,8 +28,8 @@ public class DebugUISystem extends EntitySystem implements Disposable {
         super(priority);
         this.camera = camera;
         font = new BitmapFont();
-        glProfiler = new GLProfiler(Gdx.graphics);
-        glProfiler.enable();
+//        glProfiler = new GLProfiler(Gdx.graphics);
+        GLProfiler.enable();
     }
 
     @Override
@@ -44,12 +44,12 @@ public class DebugUISystem extends EntitySystem implements Disposable {
         if(camera != null)debugLine(200, "cam y=" + floatFormat.format(camera.position.y));
         debugLine(180, "entities=" + getEngine().getEntities().size());
         if(camera != null)debugLine(160, "zoom=" + camera.zoom);
-        debugLine(100, "DC=" + glProfiler.getDrawCalls());
-        debugLine(80, "TXB=" + glProfiler.getTextureBindings());
+        debugLine(100, "DC=" + GLProfiler.calls);
+        debugLine(80, "TXB=" + GLProfiler.textureBindings);
         debugLine(60, "FPS=" + Gdx.graphics.getFramesPerSecond());
         batch.end();
 
-        glProfiler.reset();
+//        glProfiler.reset();
 
     }
 
@@ -65,7 +65,7 @@ public class DebugUISystem extends EntitySystem implements Disposable {
     @Override
     public void dispose() {
         font.dispose();
-        glProfiler.disable();
+//        glProfiler.disable();
     }
 
 
