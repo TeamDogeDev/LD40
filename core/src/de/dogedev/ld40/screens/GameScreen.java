@@ -10,20 +10,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import de.dogedev.ld40.misc.AshleyB2DContactListener;
+import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
-import de.dogedev.ld40.ashley.components.PhysicsComponent;
-import de.dogedev.ld40.ashley.components.PositionComponent;
-import de.dogedev.ld40.ashley.components.RenderComponent;
 import de.dogedev.ld40.ashley.systems.DebugUISystem;
 import de.dogedev.ld40.ashley.systems.MovementSystem;
 import de.dogedev.ld40.ashley.systems.PhysicsSystem;
 import de.dogedev.ld40.ashley.systems.RenderSystem;
-import de.dogedev.ld40.assets.enums.Textures;
+import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
 
 import static de.dogedev.ld40.Statics.ashley;
-import static de.dogedev.ld40.Statics.asset;
 
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
@@ -61,7 +57,8 @@ public class GameScreen extends ScreenAdapter {
         world.setContactListener(new AshleyB2DContactListener());
 
         EntityFactory.createEnemy(world, new Vector2(50, 100), MathUtils.PI / 1.323f);
-        EntityFactory.createEnemy(world, new Vector2(50, 50), MathUtils.PI / 1.323f);
+        Entity enemy = EntityFactory.createEnemy(world, new Vector2(50, 50), MathUtils.PI / 1.323f);
+        ComponentMappers.physics.get(enemy).body.applyLinearImpulse(0,-1000, 0, 0, true);
 
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();
