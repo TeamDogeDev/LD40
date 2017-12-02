@@ -56,8 +56,10 @@ public class PhysicsSystem extends EntitySystem {
                 positionComponent = ComponentMappers.position.get(entity);
                 Vector2 position = physicsComponent.body.getPosition();
 
-                physicsComponent.coneLight.setDirection(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
-                physicsComponent.coneLight.setPosition(physicsComponent.body.getPosition());
+                if(physicsComponent.coneLight != null){
+                    physicsComponent.coneLight.setDirection(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
+                    physicsComponent.coneLight.setPosition(physicsComponent.body.getPosition());
+                }
 
                 if(position.x > Gdx.graphics.getWidth() / PIXEL_PER_METER +5) {
                     physicsComponent.body.setTransform(-5, position.y, physicsComponent.body.getAngle());
