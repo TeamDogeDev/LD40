@@ -40,8 +40,8 @@ public class EntityFactory {
         physicsComponent.body = world.createBody(entityBody);
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
-        physicsComponent.body.setLinearDamping(0.5f);
-        physicsComponent.body.setAngularDamping(0.5f);
+        physicsComponent.body.setLinearDamping(0.8f);
+        physicsComponent.body.setAngularDamping(0.8f);
 
         ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
         physicsComponent.coneLight = coneLight;
