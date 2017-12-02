@@ -17,9 +17,18 @@ import de.dogedev.ld40.assets.enums.Textures;
 import static de.dogedev.ld40.Statics.ashley;
 import static de.dogedev.ld40.Statics.asset;
 
+
 public class EntityFactory {
 
     public static void createPlayer() {}
+    static float[] vertices = {
+            -3.0f, -0.6f,
+            -1.5f, -3.3f,
+             1.5f, -3.3f,
+             3.0f, -0.6f,
+             1.5f,  3.3f,
+            -1.5f,  3.3f
+    };
 
     public static Entity createEnemy(World world, Vector2 position, float angleRad, RayHandler rayHandler) {
         Entity entity = ashley.createEntity();
@@ -30,7 +39,8 @@ public class EntityFactory {
         entityBody.angle = angleRad;
 
         PolygonShape entityShape = new PolygonShape();
-        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
+        entityShape.set(vertices);
+//        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
 
         FixtureDef entityFixture = new FixtureDef();
         entityFixture.shape = entityShape;
