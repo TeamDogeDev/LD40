@@ -7,12 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import de.dogedev.ld40.Statics;
+import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.components.PositionComponent;
@@ -22,7 +20,7 @@ import de.dogedev.ld40.ashley.systems.MovementSystem;
 import de.dogedev.ld40.ashley.systems.PhysicsSystem;
 import de.dogedev.ld40.ashley.systems.RenderSystem;
 import de.dogedev.ld40.assets.enums.Textures;
-import javafx.geometry.Pos;
+import de.dogedev.ld40.misc.EntityFactory;
 
 import static de.dogedev.ld40.Statics.ashley;
 import static de.dogedev.ld40.Statics.asset;
@@ -57,41 +55,13 @@ public class GameScreen extends ScreenAdapter {
 
         dirtyEntities = ashley.getEntitiesFor(Family.all(DirtyComponent.class).get());
 
-        world = new World(new Vector2(0, -9.8f), false);
+        world = new World(new Vector2(0, -9.81f), false);
         ashley.addSystem(new PhysicsSystem(world, 1));
 
-        for (int j = 0; j < 2; j++) {
+        world.setContactListener(new AshleyB2DContactListener());
 
-        for (int i = 0; i < 10; i++) {
-            BodyDef entityBody = new BodyDef();
-            entityBody.type = BodyDef.BodyType.DynamicBody;
-            entityBody.position.set(i*20, 50 + (j*20) + MathUtils.random(0, 10));
-            entityBody.angle = MathUtils.PI / 3;
-
-            PolygonShape entityShape = new PolygonShape();
-            entityShape.setAsBox(12.8f/2, 12.8f/2);
-
-            FixtureDef entityFixture = new FixtureDef();
-            entityFixture.shape = entityShape;
-            entityFixture.density = 1f;
-
-            PhysicsComponent physicsComponent = ashley.createComponent(PhysicsComponent.class);
-            physicsComponent.body = world.createBody(entityBody);
-            physicsComponent.body.createFixture(entityFixture);
-            entityShape.dispose();
-
-            PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
-            RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
-            renderComponent.region = asset.getTextureRegion(Textures.ENEMY);
-
-            Entity entity = ashley.createEntity();
-            entity.add(positionComponent);
-            entity.add(renderComponent);
-            entity.add(physicsComponent);
-
-            ashley.addEntity(entity);
-        }
-        }
+        EntityFactory.createEnemy(world, new Vector2(50, 100), MathUtils.PI / 1.323f);
+        EntityFactory.createEnemy(world, new Vector2(50, 50), MathUtils.PI / 1.323f);
 
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();

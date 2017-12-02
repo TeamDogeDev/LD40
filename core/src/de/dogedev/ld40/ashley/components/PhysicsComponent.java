@@ -13,8 +13,4 @@ public class PhysicsComponent implements Pool.Poolable, Component {
         body = null;
     }
 
-    @Override
-    public String toString() {
-        return body.getPosition().x + " , " + body.getPosition().y ;
-    }
 }
