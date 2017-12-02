@@ -78,9 +78,10 @@ public class GameScreen extends ScreenAdapter {
         world.setContactListener(new AshleyB2DContactListener());
 
         for (int i = 0; i < 5; i++) {
-            EntityFactory.createEnemy(world, new Vector2(MathUtils.random(0, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER), MathUtils.random(0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER)), MathUtils.random(0, MathUtils.degreesToRadians * 180), rayHandler);
+            EntityFactory.createPlayer(world, new Vector2(MathUtils.random(0, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER), MathUtils.random(0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER)), MathUtils.random(0, MathUtils.degreesToRadians * 180), rayHandler);
         }
-        Entity enemy = EntityFactory.createEnemy(world, new Vector2(50, 50), 0, rayHandler);
+        Entity enemy = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
+        Entity base = EntityFactory.createBase(world, new Vector2(Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER / 2, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER / 2), 0);
         physicsComponent = ComponentMappers.physics.get(enemy);
 
         // Create our body definition
