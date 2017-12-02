@@ -22,13 +22,12 @@ import de.dogedev.ld40.ashley.systems.MovementSystem;
 import de.dogedev.ld40.ashley.systems.PhysicsSystem;
 import de.dogedev.ld40.ashley.systems.RenderSystem;
 import de.dogedev.ld40.assets.enums.Textures;
+import javafx.geometry.Pos;
 
 import static de.dogedev.ld40.Statics.ashley;
 import static de.dogedev.ld40.Statics.asset;
 
 public class GameScreen extends ScreenAdapter {
-    private SpriteBatch batch;
-    private Texture enemy, player, base;
     private OrthographicCamera camera;
     private OrthographicCamera debugCamera;
     private RenderSystem renderSystem;
@@ -58,54 +57,52 @@ public class GameScreen extends ScreenAdapter {
 
         dirtyEntities = ashley.getEntitiesFor(Family.all(DirtyComponent.class).get());
 
-        world = new World(new Vector2(.0f, -9.81f), false);
+        world = new World(new Vector2(0, -9.8f), false);
         ashley.addSystem(new PhysicsSystem(world, 1));
 
-        BodyDef bodyDef = new BodyDef();
+        for (int j = 0; j < 2; j++) {
 
-        // world * PPM = screen
-        // world = screen / ppm;
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(50, 50); // world coordinates
-        bodyDef.angle = MathUtils.PI / 4;
+        for (int i = 0; i < 10; i++) {
+            BodyDef entityBody = new BodyDef();
+            entityBody.type = BodyDef.BodyType.DynamicBody;
+            entityBody.position.set(i*20, 50 + (j*20) + MathUtils.random(0, 10));
+            entityBody.angle = MathUtils.PI / 3;
 
-        Body body = world.createBody(bodyDef);
+            PolygonShape entityShape = new PolygonShape();
+            entityShape.setAsBox(12.8f/2, 12.8f/2);
 
-        PolygonShape box = new PolygonShape();
-        box.setAsBox(25.6f/2, 25.6f/2);
-        body.createFixture(box, 0.0f);
-        box.dispose();
+            FixtureDef entityFixture = new FixtureDef();
+            entityFixture.shape = entityShape;
+            entityFixture.density = 1f;
 
-        PhysicsComponent physic = ashley.createComponent(PhysicsComponent.class);
-        physic.body = world.createBody(bodyDef);
+            PhysicsComponent physicsComponent = ashley.createComponent(PhysicsComponent.class);
+            physicsComponent.body = world.createBody(entityBody);
+            physicsComponent.body.createFixture(entityFixture);
+            entityShape.dispose();
 
-        PositionComponent position = ashley.createComponent(PositionComponent.class);
-        RenderComponent render = ashley.createComponent(RenderComponent.class);
-        render.region = asset.getTextureRegion(Textures.BASE);
+            PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
+            RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
+            renderComponent.region = asset.getTextureRegion(Textures.ENEMY);
 
-        Entity entity = ashley.createEntity();
-        entity.add(physic);
-        entity.add(render);
-        entity.add(position);
+            Entity entity = ashley.createEntity();
+            entity.add(positionComponent);
+            entity.add(renderComponent);
+            entity.add(physicsComponent);
+
+            ashley.addEntity(entity);
+        }
+        }
 
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(new Vector2(0, 10));
+        groundBodyDef.position.set(new Vector2(0, 1));
         Body groundBody = world.createBody(groundBodyDef);
 //
         PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(camera.viewportWidth, 10.0f);
+        groundBox.setAsBox(camera.viewportWidth, 1.0f);
         groundBody.createFixture(groundBox, 0.0f);
         groundBox.dispose();
 
-
-        ashley.addEntity(entity);
-
-
-        batch = new SpriteBatch();
-        enemy = Statics.asset.getTexture(Textures.ENEMY);
-        player = Statics.asset.getTexture(Textures.PLAYER);
-        base = Statics.asset.getTexture(Textures.BASE);
         debugRenderer = new Box2DDebugRenderer();
     }
 
@@ -115,8 +112,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         ashley.update(delta);
-
         debugRenderer.render(world, debugCamera.combined);
+
 
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
@@ -135,6 +132,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        batch.dispose();
+//        batch.dispose();
     }
 }

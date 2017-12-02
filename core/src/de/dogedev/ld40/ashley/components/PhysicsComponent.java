@@ -12,4 +12,9 @@ public class PhysicsComponent implements Pool.Poolable, Component {
     public void reset() {
         body = null;
     }
+
+    @Override
+    public String toString() {
+        return body.getPosition().x + " , " + body.getPosition().y ;
+    }
 }

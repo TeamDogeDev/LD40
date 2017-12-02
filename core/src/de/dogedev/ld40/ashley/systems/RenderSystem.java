@@ -33,31 +33,30 @@ public class RenderSystem extends EntitySystem implements EntityListener {
     }
 
     @Override
-    public void addedToEngine (Engine pengine) {
+    public void addedToEngine(Engine pengine) {
         entities = pengine.getEntitiesFor(Family.one(PositionComponent.class).one(RenderComponent.class).exclude(HiddenComponent.class).get());
 
         PooledEngine engine = (PooledEngine) pengine;
     }
 
     @Override
-    public void removedFromEngine (Engine engine) {
+    public void removedFromEngine(Engine engine) {
         engine.removeEntityListener(this);
     }
 
     @Override
-    public void entityAdded (Entity entity) {
+    public void entityAdded(Entity entity) {
         sortedEntities.add(entity);
     }
 
     @Override
-    public void entityRemoved (Entity entity) {
+    public void entityRemoved(Entity entity) {
         sortedEntities.removeValue(entity, false);
     }
 
 
-
     @Override
-    public void update (float deltaTime) {
+    public void update(float deltaTime) {
 
         try {
             sortedEntities.sort();
@@ -80,36 +79,19 @@ public class RenderSystem extends EntitySystem implements EntityListener {
     private void drawEntity(Entity e, float deltaTime) {
         RenderComponent renderComponent = ComponentMappers.render.get(e);
 
-        if(ComponentMappers.position.has(e)){
+        if (ComponentMappers.position.has(e)) {
             PositionComponent positionComponent = ComponentMappers.position.get(e);
 
-            if(ComponentMappers.look.has(e)){
-                LookComponent lookComponent = ComponentMappers.look.get(e);
-                drawRotated(renderComponent.region, positionComponent.x-renderComponent.region.getRegionWidth()/2, positionComponent.y-renderComponent.region.getRegionHeight()/2, (int)lookComponent.x, (int)lookComponent.y, renderComponent.angle);
-            } else {
-                draw(renderComponent.region, positionComponent.x-renderComponent.region.getRegionWidth()/2, positionComponent.y-renderComponent.region.getRegionHeight()/2);
-            }
+            drawRotated(renderComponent.region, positionComponent.x - renderComponent.region.getRegionWidth() / 2, positionComponent.y - renderComponent.region.getRegionHeight() / 2, positionComponent.rotation-90);
         }
-//        if(ComponentMappers.spawn.has(e) && ComponentMappers.unit.has(e) && ComponentMappers.tilePos.has(e)) {
-//            TilePositionComponent tpc = ComponentMappers.tilePos.get(e);
-//            UnitComponent units = ComponentMappers.unit.get(e);
-//            font.draw(batch, "#" + units.units,
-//                    CoordinateMapper.getTilePosX(tpc.x, tpc.y)-(Statics.settings.tileWidth>>1),
-//                    CoordinateMapper.getTilePosY(tpc.y) + (Statics.settings.tileHeight>>2),
-//                    Statics.settings.tileWidth, Align.center, false);
-//        }
-
     }
 
     private void draw(TextureRegion region, float x, float y) {
-        batch.draw(region.getTexture(), x, y, region.getRegionWidth()/2, region.getRegionHeight()/2, region.getRegionWidth(), region.getRegionHeight(), 1, 1, 0, region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight(), false, false);
+        batch.draw(region.getTexture(), x, y, region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth(), region.getRegionHeight(), 1, 1, 0, region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight(), false, false);
     }
 
-    private void drawRotated(TextureRegion region, float x, float y, int targetX, int targetY, int angleOffset) {
-        Vector2.X.set(x, y);
-        Vector2.Y.set(targetX, targetY);
-        float angle = Vector2.Y.sub(Vector2.X).angle() - 90 + angleOffset;
-        batch.draw(region.getTexture(), x, y, region.getRegionWidth()/2, region.getRegionHeight()/2, region.getRegionWidth(), region.getRegionHeight(), 1, 1, angle, region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight(), false, false);
+    private void drawRotated(TextureRegion region, float x, float y, float angle) {
+        batch.draw(region.getTexture(), x, y, region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth(), region.getRegionHeight(), 1, 1, angle, region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight(), false, false);
     }
 
 }
