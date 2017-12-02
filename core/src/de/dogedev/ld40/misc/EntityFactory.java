@@ -42,14 +42,14 @@ public class EntityFactory {
 
         FixtureDef entityFixture = new FixtureDef();
         entityFixture.shape = entityShape;
-        entityFixture.density = .1f;
+        entityFixture.density = 0.4f;
 
         PhysicsComponent physicsComponent = ashley.createComponent(PhysicsComponent.class);
         physicsComponent.body = world.createBody(entityBody);
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
         physicsComponent.body.setLinearDamping(0.8f);
-        physicsComponent.body.setAngularDamping(0.8f);
+        physicsComponent.body.setAngularDamping(2f);
 
         ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
         physicsComponent.coneLight = coneLight;
