@@ -1,7 +1,9 @@
 package de.dogedev.ld40.misc;
 
+import box2dLight.ConeLight;
+import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -19,7 +21,7 @@ public class EntityFactory {
 
     public static void createPlayer() {}
 
-    public static Entity createEnemy(World world, Vector2 position, float angleRad) {
+    public static Entity createEnemy(World world, Vector2 position, float angleRad, RayHandler rayHandler) {
         Entity entity = ashley.createEntity();
 
         BodyDef entityBody = new BodyDef();
@@ -28,7 +30,7 @@ public class EntityFactory {
         entityBody.angle = angleRad;
 
         PolygonShape entityShape = new PolygonShape();
-        entityShape.setAsBox(12.8f / 2, 12.8f / 2);
+        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
 
         FixtureDef entityFixture = new FixtureDef();
         entityFixture.shape = entityShape;
@@ -38,14 +40,17 @@ public class EntityFactory {
         physicsComponent.body = world.createBody(entityBody);
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
-        physicsComponent.body.setLinearDamping(1);
-        physicsComponent.body.setAngularDamping(1);
+        physicsComponent.body.setLinearDamping(0.5f);
+        physicsComponent.body.setAngularDamping(0.5f);
+
+        ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
+        physicsComponent.coneLight = coneLight;
 
         entityShape.dispose();
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
-        renderComponent.region = asset.getTextureRegion(Textures.ENEMY);
+        renderComponent.region = asset.getTextureRegion(Textures.PLAYER);
 
 
         entity.add(positionComponent);

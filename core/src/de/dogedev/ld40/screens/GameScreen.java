@@ -1,6 +1,5 @@
 package de.dogedev.ld40.screens;
 
-import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -8,12 +7,15 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
@@ -37,7 +39,7 @@ public class GameScreen extends ScreenAdapter {
     private RayHandler rayHandler;
 
     PhysicsComponent physicsComponent;
-    private ConeLight coneLight;
+
 
     public GameScreen() {
         init();
@@ -63,23 +65,22 @@ public class GameScreen extends ScreenAdapter {
 
         world = new World(new Vector2(0, 0), false);
 
-//        RayHandler.setGammaCorrection(true);
+        RayHandler.setGammaCorrection(true);
 //        RayHandler.useDiffuseLight(true);
 
         rayHandler = new RayHandler(world);
-//        rayHandler.setAmbientLight(.1f, 0.1f, 0.1f, 0.5f);
-//        rayHandler.setBlurNum(3);
-        rayHandler.setShadows(false);
+        rayHandler.setAmbientLight(0.01f, 0.01f, 0.01f, 0.5f);
+        rayHandler.setBlurNum(3);
+        rayHandler.setShadows(true);
 
-        coneLight = new ConeLight(rayHandler, 128, new Color(1, 1, 1, 1), 120, 50, 50, 0, 20);
         ashley.addSystem(new PhysicsSystem(world, 1));
 
         world.setContactListener(new AshleyB2DContactListener());
 
         for (int i = 0; i < 5; i++) {
-            EntityFactory.createEnemy(world, new Vector2(MathUtils.random(0, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER), MathUtils.random(0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER)), MathUtils.random(0, MathUtils.degreesToRadians * 180));
+            EntityFactory.createEnemy(world, new Vector2(MathUtils.random(0, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER), MathUtils.random(0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER)), MathUtils.random(0, MathUtils.degreesToRadians * 180), rayHandler);
         }
-        Entity enemy = EntityFactory.createEnemy(world, new Vector2(50, 50), 0);
+        Entity enemy = EntityFactory.createEnemy(world, new Vector2(50, 50), 0, rayHandler);
         physicsComponent = ComponentMappers.physics.get(enemy);
 
         // Create our body definition
@@ -107,8 +108,22 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
-        coneLight.setDirection(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
-        coneLight.setPosition(physicsComponent.body.getPosition());
+
+        if(Gdx.input.isTouched()){
+            Vector3 unproject = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            float x = unproject.x / PhysicsSystem.PIXEL_PER_METER;
+            float y = unproject.y / PhysicsSystem.PIXEL_PER_METER;
+
+            Array<Body> bodies = new Array<>();
+            world.getBodies(bodies);
+            for(Body body: bodies){
+                Vector2 force;
+                Vector2 sub = body.getPosition().sub(new Vector2(x, y));
+                force = sub.nor().scl(80000);
+                body.applyForce(force, new Vector2(x, y), true);
+            }
+        }
+
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
         }

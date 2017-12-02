@@ -56,17 +56,20 @@ public class PhysicsSystem extends EntitySystem {
                 positionComponent = ComponentMappers.position.get(entity);
                 Vector2 position = physicsComponent.body.getPosition();
 
-                if(position.x > Gdx.graphics.getWidth() / PIXEL_PER_METER) {
-                    physicsComponent.body.setTransform(0, position.y, physicsComponent.body.getAngle());
+                physicsComponent.coneLight.setDirection(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
+                physicsComponent.coneLight.setPosition(physicsComponent.body.getPosition());
+
+                if(position.x > Gdx.graphics.getWidth() / PIXEL_PER_METER +5) {
+                    physicsComponent.body.setTransform(-5, position.y, physicsComponent.body.getAngle());
                 }
-                if(position.x < 0) {
-                    physicsComponent.body.setTransform(Gdx.graphics.getWidth() / PIXEL_PER_METER, position.y, physicsComponent.body.getAngle());
+                if(position.x < -5) {
+                    physicsComponent.body.setTransform(Gdx.graphics.getWidth() / PIXEL_PER_METER+5, position.y, physicsComponent.body.getAngle());
                 }
-                if(position.y > Gdx.graphics.getHeight() / PIXEL_PER_METER) {
-                    physicsComponent.body.setTransform(position.x, 0, physicsComponent.body.getAngle());
+                if(position.y > Gdx.graphics.getHeight() / PIXEL_PER_METER +5) {
+                    physicsComponent.body.setTransform(position.x, -5, physicsComponent.body.getAngle());
                 }
-                if(position.y < 0) {
-                    physicsComponent.body.setTransform(position.x, Gdx.graphics.getHeight() / PIXEL_PER_METER, physicsComponent.body.getAngle());
+                if(position.y < -5) {
+                    physicsComponent.body.setTransform(position.x, Gdx.graphics.getHeight() / PIXEL_PER_METER +5, physicsComponent.body.getAngle());
                 }
 
                 positionComponent.x = position.x * PIXEL_PER_METER;

@@ -8,6 +8,7 @@ public class Statics {
     public static PooledEngine ashley;
     public static AssetLoader asset;
 
+
     public static void initCat() {
         asset = new AssetLoader();
         ashley = new PooledEngine();
