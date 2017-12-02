@@ -1,7 +1,9 @@
 package de.dogedev.ld40.assets.enums;
 
 public enum Textures {
-    BADLOGIC("badlogic.jpg");
+    BASE("base.png"),
+    PLAYER("player.png"),
+    ENEMY("enemy.png");
 
     public String name;
 
