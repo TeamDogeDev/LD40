@@ -3,11 +3,11 @@ package de.dogedev.ld40.ashley.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
-public class HealthComponent implements Pool.Poolable, Component{
-    public float health = 1;
+public class DamageComponent implements Pool.Poolable, Component {
+    public float damage = 0.0f;
 
     @Override
     public void reset() {
-        health = 1;
+        damage = 0.0f;
     }
 }

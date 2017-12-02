@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import de.dogedev.ld40.ashley.components.HealthComponent;
-import de.dogedev.ld40.ashley.components.PhysicsComponent;
-import de.dogedev.ld40.ashley.components.PositionComponent;
-import de.dogedev.ld40.ashley.components.RenderComponent;
+import de.dogedev.ld40.ashley.components.*;
 import de.dogedev.ld40.assets.enums.Textures;
 
 import static de.dogedev.ld40.Statics.ashley;
@@ -58,7 +55,10 @@ public class EntityFactory {
         renderComponent.region = asset.getTextureRegion(Textures.ENEMY);
 
         HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+        DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
+        damageComponent.damage = 1.0f;
 
+        entity.add(damageComponent);
         entity.add(healthComponent);
         entity.add(positionComponent);
         entity.add(renderComponent);
@@ -100,9 +100,10 @@ public class EntityFactory {
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
         renderComponent.region = asset.getTextureRegion(Textures.PLAYER);
 
-        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+//        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
 
-        entity.add(healthComponent);
+//        entity.add(healthComponent);
+
         entity.add(positionComponent);
         entity.add(renderComponent);
         entity.add(physicsComponent);
@@ -146,7 +147,10 @@ public class EntityFactory {
         renderComponent.region = asset.getTextureRegion(Textures.BULLET);
 
         HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+        DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
+        damageComponent.damage = 1.0f;
 
+        entity.add(damageComponent);
         entity.add(healthComponent);
         entity.add(positionComponent);
         entity.add(renderComponent);

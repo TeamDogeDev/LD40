@@ -1,8 +1,11 @@
 package de.dogedev.ld40.misc;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.*;
 import de.dogedev.ld40.ashley.ComponentMappers;
+import de.dogedev.ld40.ashley.components.DamageComponent;
+import de.dogedev.ld40.ashley.components.HealthComponent;
 
 public class AshleyB2DContactListener implements ContactListener {
 
@@ -15,22 +18,25 @@ public class AshleyB2DContactListener implements ContactListener {
         }
     }
 
-    private void col(Entity e, Fixture col) {
+    private void col(Entity first, Fixture col) {
         if(col.getBody().getUserData() instanceof Entity) {
             // 2 entities coll
-            Entity userData = (Entity) col.getBody().getUserData();
-            if(ComponentMappers.health.has(userData)) {
-                ComponentMappers.health.get(userData).health-=0.5;
-            }
-            if(ComponentMappers.health.has(e)) {
-                ComponentMappers.health.get(e).health-=0.5;
-            }
+            Entity second = (Entity) col.getBody().getUserData();
+            HealthComponent healthComponent;
+            DamageComponent damageComponent;
 
-            System.out.println("Collision with entity");
+            if(ComponentMappers.health.has(first) && ComponentMappers.damage.has(second)) {
+                healthComponent = ComponentMappers.health.get(first);
+                damageComponent = ComponentMappers.damage.get(second);
 
-        } else {
-            // entity mit welt
-            System.out.println("collision with world");
+                healthComponent.health -= damageComponent.damage;
+            }
+            if(ComponentMappers.health.has(second) && ComponentMappers.damage.has(first)) {
+                healthComponent = ComponentMappers.health.get(first);
+                damageComponent = ComponentMappers.damage.get(second);
+
+                healthComponent.health -= damageComponent.damage;
+            }
         }
     }
 
