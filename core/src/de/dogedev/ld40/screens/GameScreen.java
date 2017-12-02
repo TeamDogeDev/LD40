@@ -105,7 +105,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         ashley.update(delta);
-        debugRenderer.render(world, debugCamera.combined);
+//        debugRenderer.render(world, debugCamera.combined);
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
@@ -125,10 +125,10 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Vector2 angleDiff = new Vector2();
-            angleDiff.setAngle(physicsComponent.body.getAngle()).scl(2);
-            EntityFactory.createBullet(world,  physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(),  0, rayHandler);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            Vector2 angleDiff = new Vector2(2, 0);
+            angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees +90);
+            EntityFactory.createBullet(world,  physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(),  50, rayHandler);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {

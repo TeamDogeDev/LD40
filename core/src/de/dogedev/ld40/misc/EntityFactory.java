@@ -4,6 +4,7 @@ import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
@@ -89,7 +90,8 @@ public class EntityFactory {
         physicsComponent.body = world.createBody(entityBody);
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
-        physicsComponent.body.applyAngularImpulse(10000, true);
+        physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI/2), true);
+        physicsComponent.body.setFixedRotation(true);
 //        physicsComponent.body.setLinearDamping(0.8f);
 //        physicsComponent.body.setAngularDamping(2f);
 
