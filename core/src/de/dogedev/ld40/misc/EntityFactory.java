@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import de.dogedev.ld40.ashley.components.HealthComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.components.PositionComponent;
 import de.dogedev.ld40.ashley.components.RenderComponent;
@@ -19,7 +20,7 @@ import static de.dogedev.ld40.Statics.asset;
 public class EntityFactory {
 
     public static void createPlayer() {}
-    static float[] vertices = {
+    static float[] shipVertices = {
             -3.0f, -0.6f,
             -1.5f, -3.3f,
              1.5f, -3.3f,
@@ -27,7 +28,45 @@ public class EntityFactory {
              1.5f,  3.3f,
             -1.5f,  3.3f
     };
-    public static void createEnemy() {}
+
+    public static Entity createEnemy(World world, Vector2 position, float angleRad, float force) {
+        Entity entity = ashley.createEntity();
+
+        BodyDef entityBody = new BodyDef();
+        entityBody.type = BodyDef.BodyType.DynamicBody;
+        entityBody.position.set(position);
+        entityBody.angle = angleRad;
+
+        PolygonShape entityShape = new PolygonShape();
+        entityShape.set(shipVertices);
+//        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
+
+        FixtureDef entityFixture = new FixtureDef();
+        entityFixture.shape = entityShape;
+        entityFixture.density = 0.4f;
+
+        PhysicsComponent physicsComponent = ashley.createComponent(PhysicsComponent.class);
+        physicsComponent.body = world.createBody(entityBody);
+        physicsComponent.body.createFixture(entityFixture);
+        physicsComponent.body.setUserData(entity);
+        physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI/2), true);
+        physicsComponent.body.setAngularDamping(30000);
+        entityShape.dispose();
+
+        PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
+        RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
+        renderComponent.region = asset.getTextureRegion(Textures.ENEMY);
+
+        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+
+        entity.add(healthComponent);
+        entity.add(positionComponent);
+        entity.add(renderComponent);
+        entity.add(physicsComponent);
+
+        ashley.addEntity(entity);
+        return entity;
+    }
 
     public static Entity createPlayer(World world, Vector2 position, float angleRad, RayHandler rayHandler) {
         Entity entity = ashley.createEntity();
@@ -38,7 +77,7 @@ public class EntityFactory {
         entityBody.angle = angleRad;
 
         PolygonShape entityShape = new PolygonShape();
-        entityShape.set(vertices);
+        entityShape.set(shipVertices);
 //        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
 
         FixtureDef entityFixture = new FixtureDef();
@@ -61,7 +100,9 @@ public class EntityFactory {
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
         renderComponent.region = asset.getTextureRegion(Textures.PLAYER);
 
+        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
 
+        entity.add(healthComponent);
         entity.add(positionComponent);
         entity.add(renderComponent);
         entity.add(physicsComponent);
@@ -104,7 +145,9 @@ public class EntityFactory {
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
         renderComponent.region = asset.getTextureRegion(Textures.BULLET);
 
+        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
 
+        entity.add(healthComponent);
         entity.add(positionComponent);
         entity.add(renderComponent);
         entity.add(physicsComponent);

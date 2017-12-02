@@ -9,4 +9,5 @@ public class ComponentMappers {
     public static final ComponentMapper<RenderComponent> render = ComponentMapper.getFor(RenderComponent.class);
     public static final ComponentMapper<LookComponent> look = ComponentMapper.getFor(LookComponent.class);
     public static final ComponentMapper<PhysicsComponent> physics = ComponentMapper.getFor(PhysicsComponent.class);
+    public static final ComponentMapper<HealthComponent> health = ComponentMapper.getFor(HealthComponent.class);
 }

@@ -19,10 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
-import de.dogedev.ld40.ashley.systems.DebugUISystem;
-import de.dogedev.ld40.ashley.systems.MovementSystem;
-import de.dogedev.ld40.ashley.systems.PhysicsSystem;
-import de.dogedev.ld40.ashley.systems.RenderSystem;
+import de.dogedev.ld40.ashley.systems.*;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
 
@@ -74,28 +71,18 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setShadows(true);
 
         ashley.addSystem(new PhysicsSystem(world, 1));
+//        ashley.addSystem(new EnemySpawnSystem(1, 3, world));
+        ashley.addSystem(new HealthSystem());
 
         world.setContactListener(new AshleyB2DContactListener());
 
-        for (int i = 0; i < 5; i++) {
-            EntityFactory.createPlayer(world, new Vector2(MathUtils.random(0, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER), MathUtils.random(0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER)), MathUtils.random(0, MathUtils.degreesToRadians * 180), rayHandler);
-        }
-        Entity enemy = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
-        Entity base = EntityFactory.createBase(world, new Vector2(Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER / 2, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER / 2), 0);
-        physicsComponent = ComponentMappers.physics.get(enemy);
+        EntityFactory.createBase(world, new Vector2(Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER / 2, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER / 2), 0);
+        EntityFactory.createEnemy(world, new Vector2(10, 50), 45 * MathUtils.degreesToRadians, 500);
 
-        // Create our body definition
-//        BodyDef groundBodyDef = new BodyDef();
-//        groundBodyDef.position.set(new Vector2(0, 1));
-//        Body groundBody = world.createBody(groundBodyDef);
-////
-//        PolygonShape groundBox = new PolygonShape();
-//        groundBox.setAsBox(camera.viewportWidth, 1.0f);
-//        groundBody.createFixture(groundBox, 0.0f);
-//        groundBox.dispose();
+        Entity player = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
+        physicsComponent = ComponentMappers.physics.get(player);
 
-
-        debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 
     }
 
@@ -105,25 +92,25 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         ashley.update(delta);
-//        debugRenderer.render(world, debugCamera.combined);
+        debugRenderer.render(world, debugCamera.combined);
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
 
-        if(Gdx.input.isTouched()){
-            Vector3 unproject = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            float x = unproject.x / PhysicsSystem.PIXEL_PER_METER;
-            float y = unproject.y / PhysicsSystem.PIXEL_PER_METER;
-
-            Array<Body> bodies = new Array<>();
-            world.getBodies(bodies);
-            for(Body body: bodies){
-                Vector2 force;
-                Vector2 sub = body.getPosition().sub(new Vector2(x, y));
-                force = sub.nor().scl(80000);
-                body.applyForce(force, new Vector2(x, y), true);
-            }
-        }
+//        if(Gdx.input.isTouched()){
+//            Vector3 unproject = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+//            float x = unproject.x / PhysicsSystem.PIXEL_PER_METER;
+//            float y = unproject.y / PhysicsSystem.PIXEL_PER_METER;
+//
+//            Array<Body> bodies = new Array<>();
+//            world.getBodies(bodies);
+//            for(Body body: bodies){
+//                Vector2 force;
+//                Vector2 sub = body.getPosition().sub(new Vector2(x, y));
+//                force = sub.nor().scl(80000);
+//                body.applyForce(force, new Vector2(x, y), true);
+//            }
+//        }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Vector2 angleDiff = new Vector2(2, 0);
@@ -149,6 +136,9 @@ public class GameScreen extends ScreenAdapter {
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
             for (Entity entity : dirtyEntities) {
+                if(ComponentMappers.physics.has(entity)) {
+                    world.destroyBody(ComponentMappers.physics.get(entity).body);
+                }
                 ashley.removeEntity(entity);
             }
         }
