@@ -125,6 +125,12 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            Vector2 angleDiff = new Vector2();
+            angleDiff.setAngle(physicsComponent.body.getAngle()).scl(2);
+            EntityFactory.createBullet(world,  physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(),  0, rayHandler);
+        }
+
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
         }
