@@ -4,12 +4,15 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
@@ -33,6 +36,7 @@ public class GameScreen extends ScreenAdapter {
     private Box2DDebugRenderer debugRenderer;
     private World world;
 
+    PhysicsComponent physicsComponent;
     public GameScreen() {
         init();
     }
@@ -55,13 +59,14 @@ public class GameScreen extends ScreenAdapter {
 
         dirtyEntities = ashley.getEntitiesFor(Family.all(DirtyComponent.class).get());
 
-        world = new World(new Vector2(0, -9.81f), false);
+        world = new World(new Vector2(0, 0), false);
         ashley.addSystem(new PhysicsSystem(world, 1));
 
         world.setContactListener(new AshleyB2DContactListener());
 
         EntityFactory.createEnemy(world, new Vector2(50, 100), MathUtils.PI / 1.323f);
-        EntityFactory.createEnemy(world, new Vector2(50, 50), MathUtils.PI / 1.323f);
+        Entity enemy = EntityFactory.createEnemy(world, new Vector2(50, 50), MathUtils.PI / 1.323f);
+        physicsComponent = ComponentMappers.physics.get(enemy);
 
         // Create our body definition
         BodyDef groundBodyDef = new BodyDef();
@@ -72,8 +77,10 @@ public class GameScreen extends ScreenAdapter {
         groundBox.setAsBox(camera.viewportWidth, 1.0f);
         groundBody.createFixture(groundBox, 0.0f);
         groundBox.dispose();
+        physicsComponent.body.setLinearDamping(1);
 
         debugRenderer = new Box2DDebugRenderer();
+
     }
 
     @Override
@@ -85,6 +92,18 @@ public class GameScreen extends ScreenAdapter {
         debugRenderer.render(world, debugCamera.combined);
 
 
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            physicsComponent.body.applyForceToCenter(new Vector2(0, 400), true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+            physicsComponent.body.applyForceToCenter(new Vector2(0, -400), true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
+        }
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
             for (Entity entity : dirtyEntities) {

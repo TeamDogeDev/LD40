@@ -32,7 +32,7 @@ public class EntityFactory {
 
         FixtureDef entityFixture = new FixtureDef();
         entityFixture.shape = entityShape;
-        entityFixture.density = 1f;
+        entityFixture.density = .1f;
 
         PhysicsComponent physicsComponent = ashley.createComponent(PhysicsComponent.class);
         physicsComponent.body = world.createBody(entityBody);
