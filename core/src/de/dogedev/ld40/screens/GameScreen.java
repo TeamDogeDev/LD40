@@ -74,6 +74,7 @@ public class GameScreen extends ScreenAdapter {
         groundBody.createFixture(groundBox, 0.0f);
         groundBox.dispose();
         physicsComponent.body.setLinearDamping(1);
+        physicsComponent.body.setAngularDamping(1);
 
         debugRenderer = new Box2DDebugRenderer();
 
@@ -89,16 +90,19 @@ public class GameScreen extends ScreenAdapter {
 
 
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            physicsComponent.body.applyForceToCenter(new Vector2(0, 400), true);
+            physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
+//            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
+            physicsComponent.body.applyAngularImpulse(40, true);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-            physicsComponent.body.applyForceToCenter(new Vector2(0, -400), true);
+
+            physicsComponent.body.applyForceToCenter(new Vector2(0, -400).rotateRad(physicsComponent.body.getAngle()), true);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
+//            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
+            physicsComponent.body.applyAngularImpulse(-40, true);
         }
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
