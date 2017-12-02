@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.components.PositionComponent;
-import sun.font.PhysicalFont;
 
 public class PhysicsSystem extends EntitySystem {
 
