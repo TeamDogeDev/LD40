@@ -1,6 +1,5 @@
 package de.dogedev.ld40.misc;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.*;
 import de.dogedev.ld40.ashley.ComponentMappers;
@@ -36,6 +35,11 @@ public class AshleyB2DContactListener implements ContactListener {
                 damageComponent = ComponentMappers.damage.get(second);
 
                 healthComponent.health -= damageComponent.damage;
+            }
+
+            if(ComponentMappers.bullet.has(first) && ComponentMappers.asteroid.has(second) ||
+                ComponentMappers.bullet.has(second) && ComponentMappers.asteroid.has(first)){
+                ScoreManager.addKill();
             }
         }
     }

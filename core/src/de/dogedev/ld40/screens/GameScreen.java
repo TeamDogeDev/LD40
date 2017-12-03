@@ -1,5 +1,6 @@
 package de.dogedev.ld40.screens;
 
+import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -7,6 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +28,7 @@ import de.dogedev.ld40.assets.enums.ShaderPrograms;
 import de.dogedev.ld40.assets.enums.Textures;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
+import de.dogedev.ld40.misc.ScoreManager;
 import de.dogedev.ld40.misc.SoundManager;
 
 import static de.dogedev.ld40.Statics.ashley;
@@ -47,6 +50,7 @@ public class GameScreen extends ScreenAdapter {
 
     PhysicsComponent physicsComponent;
     private float lastSpeed;
+    private ConeLight engineLight;
 
 
     public GameScreen() {
@@ -56,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
     public void init() {
 
         SoundManager.init();
+        ScoreManager.init();
 
         ashley.removeAllEntities();
         ashley.getSystems().iterator().forEachRemaining(system -> ashley.removeSystem(system));
@@ -101,6 +106,9 @@ public class GameScreen extends ScreenAdapter {
         Entity player = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
         physicsComponent = ComponentMappers.physics.get(player);
 
+        engineLight = new ConeLight(rayHandler, 4, new Color(1,1,1,1), 30, 0, 0,180, 15);
+        engineLight.attachToBody(physicsComponent.body, 0,-1.5f, -90);
+
         debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 
         background = Statics.asset.getTexture(Textures.BACKGROUND);
@@ -132,6 +140,7 @@ public class GameScreen extends ScreenAdapter {
         backgroundBatch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backgroundBatch.end();
 //
+        ScoreManager.addTime(delta);
         ashley.update(delta);
 //        debugRenderer.render(world, debugCamera.combined);
         rayHandler.setCombinedMatrix(debugCamera);
@@ -178,6 +187,13 @@ public class GameScreen extends ScreenAdapter {
 
         if(engine){
             float currentSpeed = physicsComponent.body.getLinearVelocity().len();
+            System.out.println(currentSpeed);
+            engineLight.setActive(true);
+            engineLight.setConeDegree(45-currentSpeed);
+            engineLight.setDistance(currentSpeed);
+            if(engineLight.getConeDegree() < 5){
+                engineLight.setConeDegree(5);
+            }
             if(currentSpeed <= lastSpeed){
                 SoundManager.pauseEngine();
             } else {
@@ -185,6 +201,8 @@ public class GameScreen extends ScreenAdapter {
             }
             lastSpeed = currentSpeed;
         } else {
+            engineLight.setConeDegree(30);
+            engineLight.setActive(false);
             SoundManager.stopEngine();
         }
 

@@ -12,4 +12,7 @@ public class ComponentMappers {
     public static final ComponentMapper<HealthComponent> health = ComponentMapper.getFor(HealthComponent.class);
     public static final ComponentMapper<DamageComponent> damage = ComponentMapper.getFor(DamageComponent.class);
     public static final ComponentMapper<WeakComponent> weak = ComponentMapper.getFor(WeakComponent.class);
+    public static final ComponentMapper<BulletComponent> bullet = ComponentMapper.getFor(BulletComponent.class);
+    public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
+    public static final ComponentMapper<AsteroidComponent> asteroid = ComponentMapper.getFor(AsteroidComponent.class);
 }

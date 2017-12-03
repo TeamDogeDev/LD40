@@ -20,7 +20,7 @@ public class SoundManager {
         engineRunning = Gdx.audio.newMusic(Gdx.files.internal("101278__tomlija__air-pump-drone-and-hum.ogg"));
         engineStart = Gdx.audio.newMusic(Gdx.files.internal("98630__robinhood76__01820-futuristic-space-foley.ogg"));
         engineStart2 = Gdx.audio.newMusic(Gdx.files.internal("98630__robinhood76__01820-futuristic-space-foley_end.ogg"));
-        engineSlowdown.setVolume(0.3f);
+        engineSlowdown.setVolume(0.17f);
     }
 
     public static void startEngine(){
@@ -43,7 +43,7 @@ public class SoundManager {
             if(engineStart.getPosition() > 5){
                 engineStart2.setVolume(1);
             } else {
-                engineStart2.setVolume(0.3f);
+                engineStart2.setVolume(0.17f);
             }
             engineStart2.play();
 //            engineStart.stop();

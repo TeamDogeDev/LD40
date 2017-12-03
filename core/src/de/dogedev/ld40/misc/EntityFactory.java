@@ -72,6 +72,7 @@ public class EntityFactory {
 
         entity.add(damageComponent);
         entity.add(healthComponent);
+        entity.add(ashley.createComponent(AsteroidComponent.class));
         entity.add(positionComponent);
         entity.add(renderComponent);
         entity.add(physicsComponent);
@@ -120,6 +121,7 @@ public class EntityFactory {
 
         entity.add(positionComponent);
         entity.add(renderComponent);
+        entity.add(ashley.createComponent(PlayerComponent.class));
         entity.add(physicsComponent);
 
         ashley.addEntity(entity);
@@ -167,6 +169,7 @@ public class EntityFactory {
         entity.add(damageComponent);
         entity.add(healthComponent);
         entity.add(ashley.createComponent(WeakComponent.class));
+        entity.add(ashley.createComponent(BulletComponent.class));
         entity.add(positionComponent);
         entity.add(renderComponent);
         entity.add(physicsComponent);
