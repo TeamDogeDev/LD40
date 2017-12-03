@@ -112,7 +112,7 @@ public class GameScreen extends ScreenAdapter {
 //        cloudShader.end();
     }
 
-    float timeInS = 5.0f;
+    float timeInS = 50.0f;
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
