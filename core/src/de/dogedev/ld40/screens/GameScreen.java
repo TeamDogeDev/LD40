@@ -75,10 +75,14 @@ public class GameScreen extends ScreenAdapter {
         RayHandler.setGammaCorrection(true);
 //        RayHandler.useDiffuseLight(true);
 
+
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.01f, 0.01f, 0.01f, 0.5f);
         rayHandler.setBlurNum(3);
         rayHandler.setShadows(true);
+
+//        DirectionalLight directionalLight = new DirectionalLight(rayHandler, 512, new Color(0,0.01f,0.01f,0.5f), +250);
+
 
         ashley.addSystem(new PhysicsSystem(world, 1));
         ashley.addSystem(new EnemySpawnSystem(0.5f, 3, world));
@@ -86,7 +90,7 @@ public class GameScreen extends ScreenAdapter {
 
         world.setContactListener(new AshleyB2DContactListener());
 
-        EntityFactory.createBase(world, new Vector2(Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER / 2, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER / 2), 0);
+//        EntityFactory.createBase(world, new Vector2(Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER / 2, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER / 2), 0);
 //        EntityFactory.createEnemy(world, new Vector2(10, 50), 45 * MathUtils.degreesToRadians, 500);
 
         Entity player = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
@@ -136,6 +140,7 @@ public class GameScreen extends ScreenAdapter {
             Vector2 angleDiff = new Vector2(2, 0);
             angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
             EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(), 50, rayHandler);
+            physicsComponent.body.applyForceToCenter(new Vector2(0, -100).rotateRad(physicsComponent.body.getAngle()), true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {

@@ -149,7 +149,7 @@ public class EntityFactory {
         physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI/2), true);
         physicsComponent.body.setFixedRotation(true);
 //        physicsComponent.body.setLinearDamping(0.8f);
-//        physicsComponent.body.setAngularDamping(2f);
+//        physicsComponent.body.setAngularDamping(2000f);
 
 //        ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
 //        physicsComponent.coneLight = coneLight;
