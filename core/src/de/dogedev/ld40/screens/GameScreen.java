@@ -81,13 +81,13 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setShadows(true);
 
         ashley.addSystem(new PhysicsSystem(world, 1));
-        ashley.addSystem(new EnemySpawnSystem(1, 3, world));
+        ashley.addSystem(new EnemySpawnSystem(0.5f, 3, world));
         ashley.addSystem(new HealthSystem());
 
         world.setContactListener(new AshleyB2DContactListener());
 
         EntityFactory.createBase(world, new Vector2(Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER / 2, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER / 2), 0);
-        EntityFactory.createEnemy(world, new Vector2(10, 50), 45 * MathUtils.degreesToRadians, 500);
+//        EntityFactory.createEnemy(world, new Vector2(10, 50), 45 * MathUtils.degreesToRadians, 500);
 
         Entity player = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
         physicsComponent = ComponentMappers.physics.get(player);
@@ -108,7 +108,7 @@ public class GameScreen extends ScreenAdapter {
 //        cloudShader.end();
     }
 
-    float timeInS = 0.0f;
+    float timeInS = 5.0f;
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -124,7 +124,7 @@ public class GameScreen extends ScreenAdapter {
         backgroundBatch.end();
 //
         ashley.update(delta);
-        debugRenderer.render(world, debugCamera.combined);
+//        debugRenderer.render(world, debugCamera.combined);
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 

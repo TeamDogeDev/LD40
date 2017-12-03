@@ -15,10 +15,11 @@ uniform float iTime;
 // UNIFORMS
 vec2 iResolution = vec2(1280, 768);
 
-float uDistanceFactor = 250.0;
+float uDistanceFactor = 1250.0;
 float uStarSize = 9.0;
 const int uNumStars = 100;
-vec4 uDominantColor = vec4(0.8,0.5,0.4,1.0);
+//vec4 uDominantColor = vec4(0.8,0.5,0.4,1.0);
+vec4 uDominantColor = vec4(0.2, 0.2, 0.2,1.0);
 
 float rand(vec2 co){
   return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
