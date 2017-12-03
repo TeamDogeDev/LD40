@@ -26,6 +26,15 @@ public class EntityFactory {
             -1.5f,  3.3f
     };
 
+    static float[] asteroid2Vertices = {
+            -3.0f, -0.6f,
+            -1.5f, -3.3f,
+            1.5f, -3.3f,
+            3.0f, -0.6f,
+            1.5f,  3.3f,
+            -1.5f,  3.3f
+    };
+
     public static Entity createEnemy(World world, Vector2 position, float angleRad, float force) {
         Entity entity = ashley.createEntity();
 
@@ -35,7 +44,7 @@ public class EntityFactory {
         entityBody.angle = angleRad;
 
         PolygonShape entityShape = new PolygonShape();
-        entityShape.set(shipVertices);
+        entityShape.set(asteroid2Vertices);
 //        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
 
         FixtureDef entityFixture = new FixtureDef();
@@ -47,7 +56,8 @@ public class EntityFactory {
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
         physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI/2), true);
-        physicsComponent.body.setAngularDamping(30000);
+//        physicsComponent.body.setAngularDamping(30000);
+        physicsComponent.body.setAngularVelocity(1);
         entityShape.dispose();
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
