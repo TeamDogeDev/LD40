@@ -19,6 +19,7 @@ import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.systems.*;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
+import de.dogedev.ld40.misc.Shake;
 
 import static de.dogedev.ld40.Statics.ashley;
 
@@ -31,6 +32,8 @@ public class GameScreen extends ScreenAdapter {
     private Box2DDebugRenderer debugRenderer;
     private World world;
     private RayHandler rayHandler;
+
+    private Shake shake;
 
     PhysicsComponent physicsComponent;
 
@@ -81,12 +84,15 @@ public class GameScreen extends ScreenAdapter {
 
         debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 
+        shake = new Shake();
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        shake.update(delta, camera, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
 
         ashley.update(delta);
         debugRenderer.render(world, debugCamera.combined);
@@ -109,46 +115,47 @@ public class GameScreen extends ScreenAdapter {
 //            }
 //        }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Vector2 angleDiff = new Vector2(2, 0);
-            angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees +90);
-            EntityFactory.createBullet(world,  physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(),  50, rayHandler);
+            angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
+            EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(), 50, rayHandler);
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
             physicsComponent.body.applyAngularImpulse(5, true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             physicsComponent.body.applyForceToCenter(new Vector2(-400, 0).rotateRad(physicsComponent.body.getAngle()), true);
 //            physicsComponent.body.applyAngularImpulse(5, true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 
             physicsComponent.body.applyForceToCenter(new Vector2(0, -400).rotateRad(physicsComponent.body.getAngle()), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
             physicsComponent.body.applyAngularImpulse(-5, true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.E)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+            shake.shake(1);
             physicsComponent.body.applyForceToCenter(new Vector2(400, 0).rotateRad(physicsComponent.body.getAngle()), true);
 //            physicsComponent.body.applyAngularImpulse(-5, true);
         }
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
             for (Entity entity : dirtyEntities) {
-                if(ComponentMappers.physics.has(entity)) {
+                if (ComponentMappers.physics.has(entity)) {
                     world.destroyBody(ComponentMappers.physics.get(entity).body);
                 }
                 ashley.removeEntity(entity);
             }
         }
+    
     }
-
 
     @Override
     public void resize(int width, int height) {
