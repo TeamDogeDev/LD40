@@ -21,14 +21,14 @@ void main() {
         }
     }
     if (texture2D(u_sampler2D, texcoord).r < 0.3) {
-        gl_FragColor = sum*sum*0.012 + texture2D(u_sampler2D, texcoord) * v_color;
+        gl_FragColor = (sum*sum*0.012 + texture2D(u_sampler2D, texcoord)) * v_color;
     } else {
         if (texture2D(u_sampler2D, texcoord).r < 0.5) {
-            gl_FragColor = sum*sum*0.009 + texture2D(u_sampler2D, texcoord) * v_color;
+            gl_FragColor = (sum*sum*0.009 + texture2D(u_sampler2D, texcoord)) * v_color;
         } else {
-            gl_FragColor = sum*sum*0.0075 + texture2D(u_sampler2D, texcoord) * v_color;
+            gl_FragColor = (sum*sum*0.0075 + texture2D(u_sampler2D, texcoord)) * v_color;
         }
     }
 
-//    gl_FragColor = texture2D(u_sampler2D,v_texCoord0.st) * vec4(0, 0, 1, v_color.a);
+//    gl_FragColor = v_color;
 }

@@ -185,7 +185,6 @@ public class GameScreen extends ScreenAdapter {
 
         if (engine) {
             float currentSpeed = physicsComponent.body.getLinearVelocity().len();
-            System.out.println(currentSpeed);
             engineLight.setActive(true);
             engineLight.setConeDegree(45 - currentSpeed);
             engineLight.setDistance(currentSpeed);

@@ -37,19 +37,18 @@ public class RenderSystem extends EntitySystem implements EntityListener {
         batch.setShader(shader);
 
 
-
     }
 
     float intensity = 0.0f;
 
     private void updateShader(float delta) {
-        float a = 0.15f;
+        float a = 0.55f;
         float b = 10;
         float h = 0;
         float k = a;
         intensity += delta;
 
-        float value = (a * MathUtils.sin(b*(intensity-h)))+k;
+        float value = (a * MathUtils.sin(b * (intensity - h))) + k;
         shader.begin();
         shader.setUniformf("iIntensity", value);
         shader.end();
@@ -91,7 +90,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
 
         batch.begin();
         for (int i = 0; i < entities.size(); i++) {
-            batch.setColor(MathUtils.random(0, 1.0f), MathUtils.random(0, 1.0f), MathUtils.random(0, 1.0f), 1.0f);
+            batch.setColor(1.0f, 0, 0, 1.0f);
             Entity e = entities.get(i);
             drawEntity(e, deltaTime);
         }
