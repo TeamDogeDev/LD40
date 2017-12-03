@@ -79,6 +79,7 @@ public class GameScreen extends ScreenAdapter {
         renderSystem = new RenderSystem(camera, 5);
         ashley.addSystem(renderSystem);
         ashley.addSystem(new DebugUISystem(camera, 6));
+        ashley.addSystem(new OverlayRenderSystem(7));
 
         dirtyEntities = ashley.getEntitiesFor(Family.all(DirtyComponent.class).get());
 

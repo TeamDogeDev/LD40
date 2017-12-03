@@ -2,10 +2,13 @@ package de.dogedev.ld40.ashley.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.Statics;
@@ -15,6 +18,7 @@ import de.dogedev.ld40.ashley.components.LookComponent;
 import de.dogedev.ld40.ashley.components.PositionComponent;
 import de.dogedev.ld40.ashley.components.RenderComponent;
 import de.dogedev.ld40.assets.enums.ShaderPrograms;
+import de.dogedev.ld40.assets.enums.Textures;
 
 /**
  * Created by Furuha on 28.01.2016.
@@ -26,13 +30,15 @@ public class RenderSystem extends EntitySystem implements EntityListener {
     private Array<Entity> sortedEntities;
     private BitmapFont font;
     ImmutableArray<Entity> entities;
+    ShaderProgram shader;
 
     public RenderSystem(OrthographicCamera camera, int priority) {
         super(priority);
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.sortedEntities = new Array<>();
-//        batch.setShader(Statics.asset.getShader(ShaderPrograms.EDGE));
+        shader = Statics.asset.getShader(ShaderPrograms.EDGE);
+        batch.setShader(shader);
     }
 
     @Override
@@ -74,7 +80,6 @@ public class RenderSystem extends EntitySystem implements EntityListener {
             Entity e = entities.get(i);
             drawEntity(e, deltaTime);
         }
-
         batch.end();
 
     }
@@ -84,7 +89,6 @@ public class RenderSystem extends EntitySystem implements EntityListener {
 
         if (ComponentMappers.position.has(e)) {
             PositionComponent positionComponent = ComponentMappers.position.get(e);
-
             drawRotated(renderComponent.region, positionComponent.x - renderComponent.region.getRegionWidth() / 2, positionComponent.y - renderComponent.region.getRegionHeight() / 2, positionComponent.rotation);
         }
     }
