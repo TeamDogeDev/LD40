@@ -19,6 +19,7 @@ import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.systems.*;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
+import de.dogedev.ld40.misc.Shake;
 
 import static de.dogedev.ld40.Statics.ashley;
 
@@ -31,6 +32,8 @@ public class GameScreen extends ScreenAdapter {
     private Box2DDebugRenderer debugRenderer;
     private World world;
     private RayHandler rayHandler;
+
+    private Shake shake;
 
     PhysicsComponent physicsComponent;
 
@@ -81,12 +84,15 @@ public class GameScreen extends ScreenAdapter {
 
         debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 
+        shake = new Shake();
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        shake.update(delta, camera, new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2));
 
         ashley.update(delta);
         debugRenderer.render(world, debugCamera.combined);
@@ -129,6 +135,9 @@ public class GameScreen extends ScreenAdapter {
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
             physicsComponent.body.applyAngularImpulse(-5, true);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+            shake.shake(1);
         }
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
