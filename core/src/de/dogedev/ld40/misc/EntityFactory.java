@@ -52,7 +52,7 @@ public class EntityFactory {
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
-        renderComponent.region = asset.getTextureRegion(Textures.ENEMY);
+        renderComponent.region = asset.getTextureRegion(Textures.ASTEROID_2);
 
         HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
         DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
