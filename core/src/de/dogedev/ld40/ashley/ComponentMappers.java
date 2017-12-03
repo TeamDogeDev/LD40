@@ -11,4 +11,5 @@ public class ComponentMappers {
     public static final ComponentMapper<PhysicsComponent> physics = ComponentMapper.getFor(PhysicsComponent.class);
     public static final ComponentMapper<HealthComponent> health = ComponentMapper.getFor(HealthComponent.class);
     public static final ComponentMapper<DamageComponent> damage = ComponentMapper.getFor(DamageComponent.class);
+    public static final ComponentMapper<WeakComponent> weak = ComponentMapper.getFor(WeakComponent.class);
 }

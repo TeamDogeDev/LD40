@@ -152,6 +152,7 @@ public class EntityFactory {
 
         entity.add(damageComponent);
         entity.add(healthComponent);
+        entity.add(ashley.createComponent(WeakComponent.class));
         entity.add(positionComponent);
         entity.add(renderComponent);
         entity.add(physicsComponent);

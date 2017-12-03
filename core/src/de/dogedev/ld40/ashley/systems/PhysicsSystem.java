@@ -1,15 +1,13 @@
 package de.dogedev.ld40.ashley.systems;
 
-import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import de.dogedev.ld40.ashley.ComponentMappers;
+import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.components.PositionComponent;
 
@@ -62,16 +60,32 @@ public class PhysicsSystem extends EntitySystem {
                 }
 
                 if(position.x > Gdx.graphics.getWidth() / PIXEL_PER_METER +5) {
-                    physicsComponent.body.setTransform(-5, position.y, physicsComponent.body.getAngle());
+                    if(ComponentMappers.weak.has(entity)){
+                        entity.add(((PooledEngine)getEngine()).createComponent(DirtyComponent.class));
+                    } else {
+                        physicsComponent.body.setTransform(-5, position.y, physicsComponent.body.getAngle());
+                    }
                 }
                 if(position.x < -5) {
-                    physicsComponent.body.setTransform(Gdx.graphics.getWidth() / PIXEL_PER_METER+5, position.y, physicsComponent.body.getAngle());
+                    if(ComponentMappers.weak.has(entity)){
+                        entity.add(((PooledEngine)getEngine()).createComponent(DirtyComponent.class));
+                    } else {
+                        physicsComponent.body.setTransform(Gdx.graphics.getWidth() / PIXEL_PER_METER+5, position.y, physicsComponent.body.getAngle());
+                    }
                 }
                 if(position.y > Gdx.graphics.getHeight() / PIXEL_PER_METER +5) {
-                    physicsComponent.body.setTransform(position.x, -5, physicsComponent.body.getAngle());
+                    if(ComponentMappers.weak.has(entity)){
+                        entity.add(((PooledEngine)getEngine()).createComponent(DirtyComponent.class));
+                    } else {
+                        physicsComponent.body.setTransform(position.x, -5, physicsComponent.body.getAngle());
+                    }
                 }
                 if(position.y < -5) {
-                    physicsComponent.body.setTransform(position.x, Gdx.graphics.getHeight() / PIXEL_PER_METER +5, physicsComponent.body.getAngle());
+                    if(ComponentMappers.weak.has(entity)){
+                        entity.add(((PooledEngine)getEngine()).createComponent(DirtyComponent.class));
+                    } else {
+                        physicsComponent.body.setTransform(position.x, Gdx.graphics.getHeight() / PIXEL_PER_METER +5, physicsComponent.body.getAngle());
+                    }
                 }
 
                 positionComponent.x = position.x * PIXEL_PER_METER;
