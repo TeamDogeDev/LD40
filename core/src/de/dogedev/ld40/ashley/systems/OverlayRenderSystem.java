@@ -17,6 +17,8 @@ import de.dogedev.ld40.ashley.components.PositionComponent;
 import de.dogedev.ld40.assets.enums.ShaderPrograms;
 import de.dogedev.ld40.assets.enums.Textures;
 
+import java.awt.*;
+
 public class OverlayRenderSystem extends EntitySystem {
 
     private final ShaderProgram shader;

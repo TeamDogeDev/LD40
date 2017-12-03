@@ -19,7 +19,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
@@ -29,8 +28,8 @@ import de.dogedev.ld40.assets.enums.ShaderPrograms;
 import de.dogedev.ld40.assets.enums.Textures;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
-import de.dogedev.ld40.overlays.AbstractOverlay;
-import de.dogedev.ld40.overlays.HealthOverlay;import de.dogedev.ld40.misc.ScoreManager;import de.dogedev.ld40.misc.SoundManager;
+import de.dogedev.ld40.misc.ScoreManager;
+import de.dogedev.ld40.misc.SoundManager;
 
 import static de.dogedev.ld40.Statics.ashley;
 
@@ -47,8 +46,6 @@ public class GameScreen extends ScreenAdapter {
     private Texture background;
     private Batch backgroundBatch;
     private ShaderProgram backgroundShader;
-
-    private Array<AbstractOverlay> overlays;
 
     PhysicsComponent physicsComponent;
     private float lastSpeed;
@@ -109,8 +106,8 @@ public class GameScreen extends ScreenAdapter {
         Entity player = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
         physicsComponent = ComponentMappers.physics.get(player);
 
-        engineLight = new ConeLight(rayHandler, 4, new Color(1,1,1,1), 30, 0, 0,180, 15);
-        engineLight.attachToBody(physicsComponent.body, 0,-1.5f, -90);
+        engineLight = new ConeLight(rayHandler, 4, new Color(1, 1, 1, 1), 30, 0, 0, 180, 15);
+        engineLight.attachToBody(physicsComponent.body, 0, -1.5f, -90);
 
         debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 
@@ -118,12 +115,6 @@ public class GameScreen extends ScreenAdapter {
         backgroundBatch = new SpriteBatch();
         initShader();
 
-        overlays = new Array<>();
-        overlays.add(new HealthOverlay());
-
-        for(AbstractOverlay overlay : overlays) {
-            overlay.init();
-        }
     }
 
     private void initShader() {
@@ -136,12 +127,13 @@ public class GameScreen extends ScreenAdapter {
     }
 
     float timeInS = 50.0f;
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        timeInS+=delta;
+        timeInS += delta;
         backgroundShader.begin();
         backgroundShader.setUniformf("iTime", timeInS);
         backgroundShader.end();
@@ -155,15 +147,6 @@ public class GameScreen extends ScreenAdapter {
 //        debugRenderer.render(world, debugCamera.combined);
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
-
-        for (AbstractOverlay overlay : overlays) {
-            if (overlay.isVisible()) {
-                overlay.update(delta);
-                overlay.render();
-            }
-        }
-
-
 
         if (Gdx.input.isTouched()) {
             Vector2 angleDiff = new Vector2(2, 0);
@@ -200,16 +183,16 @@ public class GameScreen extends ScreenAdapter {
         }
 
 
-        if(engine){
+        if (engine) {
             float currentSpeed = physicsComponent.body.getLinearVelocity().len();
             System.out.println(currentSpeed);
             engineLight.setActive(true);
-            engineLight.setConeDegree(45-currentSpeed);
+            engineLight.setConeDegree(45 - currentSpeed);
             engineLight.setDistance(currentSpeed);
-            if(engineLight.getConeDegree() < 5){
+            if (engineLight.getConeDegree() < 5) {
                 engineLight.setConeDegree(5);
             }
-            if(currentSpeed <= lastSpeed){
+            if (currentSpeed <= lastSpeed) {
                 SoundManager.pauseEngine();
             } else {
                 SoundManager.startEngine();
@@ -230,7 +213,7 @@ public class GameScreen extends ScreenAdapter {
                 ashley.removeEntity(entity);
             }
         }
-    
+
     }
 
     @Override
@@ -244,9 +227,6 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.dispose();
         backgroundBatch.dispose();
         world.dispose();
-        for (AbstractOverlay overlay : overlays) {
-            overlay.dispose();
-        }
 //        batch.dispose();
     }
 }
