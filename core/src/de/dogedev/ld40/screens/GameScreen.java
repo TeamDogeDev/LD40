@@ -29,6 +29,7 @@ import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
 import de.dogedev.ld40.overlays.AbstractOverlay;
 import de.dogedev.ld40.overlays.HealthOverlay;
+import de.dogedev.ld40.misc.SoundManager;
 
 import static de.dogedev.ld40.Statics.ashley;
 
@@ -49,6 +50,7 @@ public class GameScreen extends ScreenAdapter {
     private Array<AbstractOverlay> overlays;
 
     PhysicsComponent physicsComponent;
+    private float lastSpeed;
 
 
     public GameScreen() {
@@ -56,6 +58,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void init() {
+
+        SoundManager.init();
+
         ashley.removeAllEntities();
         ashley.getSystems().iterator().forEachRemaining(system -> ashley.removeSystem(system));
 
@@ -154,8 +159,11 @@ public class GameScreen extends ScreenAdapter {
             physicsComponent.body.applyForceToCenter(new Vector2(0, -100).rotateRad(physicsComponent.body.getAngle()), true);
         }
 
+
+        boolean engine = false;
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
+            engine = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
@@ -166,8 +174,8 @@ public class GameScreen extends ScreenAdapter {
 //            physicsComponent.body.applyAngularImpulse(5, true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-
             physicsComponent.body.applyForceToCenter(new Vector2(0, -400).rotateRad(physicsComponent.body.getAngle()), true);
+            engine = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
@@ -177,6 +185,20 @@ public class GameScreen extends ScreenAdapter {
             physicsComponent.body.applyForceToCenter(new Vector2(400, 0).rotateRad(physicsComponent.body.getAngle()), true);
 //            physicsComponent.body.applyAngularImpulse(-5, true);
         }
+
+
+        if(engine){
+            float currentSpeed = physicsComponent.body.getLinearVelocity().len();
+            if(currentSpeed <= lastSpeed){
+                SoundManager.pauseEngine();
+            } else {
+                SoundManager.startEngine();
+            }
+            lastSpeed = currentSpeed;
+        } else {
+            SoundManager.stopEngine();
+        }
+
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
             for (Entity entity : dirtyEntities) {
