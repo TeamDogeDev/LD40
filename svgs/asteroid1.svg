@@ -7,7 +7,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="100"
@@ -16,34 +15,16 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="asteroid1.svg">
+   sodipodi:docname="asteroid1.svg"
+   inkscape:export-filename="H:\LD40\LD40\core\assets\asteroid2.png"
+   inkscape:export-xdpi="61.439999"
+   inkscape:export-ydpi="61.439999">
   <defs
      id="defs2">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient2860">
-      <stop
-         style="stop-color:#412a01;stop-opacity:1"
-         offset="0"
-         id="stop2856" />
-      <stop
-         style="stop-color:#989898;stop-opacity:1"
-         offset="1"
-         id="stop2858" />
-    </linearGradient>
     <inkscape:path-effect
        effect="spiro"
        id="path-effect1368"
        is_visible="true" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient2860"
-       id="linearGradient2876"
-       x1="-5.6497645"
-       y1="293.35867"
-       x2="33.780132"
-       y2="279.69452"
-       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -52,9 +33,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9195959"
-     inkscape:cx="18.490556"
-     inkscape:cy="56.131429"
+     inkscape:zoom="3.959798"
+     inkscape:cx="-84.472641"
+     inkscape:cy="30.307746"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -63,8 +44,8 @@
      units="px"
      inkscape:window-width="2036"
      inkscape:window-height="995"
-     inkscape:window-x="574"
-     inkscape:window-y="254"
+     inkscape:window-x="657"
+     inkscape:window-y="261"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata5">
@@ -84,7 +65,7 @@
      id="layer1"
      transform="translate(0,-270.54165)">
     <path
-       style="fill:url(#linearGradient2876);stroke:#010100;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       style="fill:none;stroke:#fffff0;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
        d="m 12.494849,273.41345 c -1.814209,0.16621 -3.6354487,-0.31599 -5.4541417,-0.20951 -0.9093465,0.0532 -1.8262727,0.26146 -2.6019401,0.73904 -0.3878337,0.23879 -0.7368173,0.54374 -1.0105406,0.90776 -0.2737234,0.36403 -0.4710305,0.78778 -0.5550792,1.23541 -0.111201,0.59224 -0.023577,1.20156 -0.033409,1.80407 -0.023149,1.41853 -0.5830215,2.76553 -1.1145994,4.0809 -0.5315779,1.31537 -1.05195487,2.68684 -0.99014823,4.10422 0.0675089,1.54814 0.83553503,2.99897 1.85355763,4.16727 1.0180226,1.16831 2.2799031,2.09341 3.5252417,3.0156 1.3641525,1.01018 2.7565421,2.04712 4.3770769,2.55232 0.810268,0.25261 1.671482,0.3654 2.513443,0.25843 0.841961,-0.10697 1.663816,-0.44136 2.296869,-1.00668 0.720184,-0.64313 1.157567,-1.53676 1.570744,-2.40944 0.413177,-0.87267 0.835526,-1.77056 1.536264,-2.43482 0.73882,-0.70036 1.71901,-1.07671 2.674773,-1.42725 0.955764,-0.35054 1.939713,-0.70663 2.704026,-1.37908 0.653012,-0.57453 1.106981,-1.35383 1.371848,-2.18229 0.264868,-0.82847 0.348124,-1.70636 0.336179,-2.57605 -0.02389,-1.73938 -0.420804,-3.458 -0.438496,-5.19745 -0.0069,-0.67937 0.04413,-1.35901 0.01614,-2.03784 -0.02799,-0.67883 -0.139407,-1.36718 -0.450454,-1.9712 -0.391934,-0.7611 -1.08667,-1.34424 -1.873448,-1.68167 -0.786778,-0.33744 -1.660783,-0.44063 -2.5152,-0.38724 -1.708835,0.10678 -3.312535,0.81268 -4.932377,1.36733 -0.911949,0.31226 -1.846423,0.58023 -2.80633,0.66817 z"
        id="path1366"
        inkscape:connector-curvature="0"
