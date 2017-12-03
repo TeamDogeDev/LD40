@@ -92,7 +92,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        shake.update(delta, camera, new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2));
+        shake.update(delta, camera, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
 
         ashley.update(delta);
         debugRenderer.render(world, debugCamera.combined);
@@ -115,41 +115,50 @@ public class GameScreen extends ScreenAdapter {
 //            }
 //        }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Vector2 angleDiff = new Vector2(2, 0);
-            angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees +90);
-            EntityFactory.createBullet(world,  physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(),  50, rayHandler);
+            angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
+            EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(), 50, rayHandler);
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
             physicsComponent.body.applyAngularImpulse(5, true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
+//            physicsComponent.body.applyAngularImpulse(5, true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 
             physicsComponent.body.applyForceToCenter(new Vector2(0, -400).rotateRad(physicsComponent.body.getAngle()), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
             physicsComponent.body.applyAngularImpulse(-5, true);
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
             shake.shake(1);
-        }
-        // remove dirty entities
-        if (dirtyEntities.size() > 0) {
-            for (Entity entity : dirtyEntities) {
-                if(ComponentMappers.physics.has(entity)) {
-                    world.destroyBody(ComponentMappers.physics.get(entity).body);
+            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
+//            physicsComponent.body.applyAngularImpulse(-5, true);
+            }
+            // remove dirty entities
+            if (dirtyEntities.size() > 0) {
+                for (Entity entity : dirtyEntities) {
+                    if (ComponentMappers.physics.has(entity)) {
+                        world.destroyBody(ComponentMappers.physics.get(entity).body);
+                    }
+                    ashley.removeEntity(entity);
                 }
-                ashley.removeEntity(entity);
             }
         }
-    }
 
+
+    }
 
     @Override
     public void resize(int width, int height) {
