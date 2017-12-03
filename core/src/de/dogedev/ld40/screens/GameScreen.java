@@ -19,7 +19,6 @@ import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.systems.*;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
-import de.dogedev.ld40.misc.Shake;
 
 import static de.dogedev.ld40.Statics.ashley;
 
@@ -33,7 +32,6 @@ public class GameScreen extends ScreenAdapter {
     private World world;
     private RayHandler rayHandler;
 
-    private Shake shake;
 
     PhysicsComponent physicsComponent;
 
@@ -71,7 +69,7 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setShadows(true);
 
         ashley.addSystem(new PhysicsSystem(world, 1));
-//        ashley.addSystem(new EnemySpawnSystem(1, 3, world));
+        ashley.addSystem(new EnemySpawnSystem(1, 3, world));
         ashley.addSystem(new HealthSystem());
 
         world.setContactListener(new AshleyB2DContactListener());
@@ -84,7 +82,6 @@ public class GameScreen extends ScreenAdapter {
 
         debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 
-        shake = new Shake();
     }
 
     @Override
@@ -92,10 +89,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        shake.update(delta, camera, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
-
         ashley.update(delta);
-        debugRenderer.render(world, debugCamera.combined);
+//        debugRenderer.render(world, debugCamera.combined);
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
@@ -115,7 +110,7 @@ public class GameScreen extends ScreenAdapter {
 //            }
 //        }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isTouched()) {
             Vector2 angleDiff = new Vector2(2, 0);
             angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
             EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(), 50, rayHandler);
@@ -141,7 +136,6 @@ public class GameScreen extends ScreenAdapter {
             physicsComponent.body.applyAngularImpulse(-5, true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-            shake.shake(1);
             physicsComponent.body.applyForceToCenter(new Vector2(400, 0).rotateRad(physicsComponent.body.getAngle()), true);
 //            physicsComponent.body.applyAngularImpulse(-5, true);
         }
