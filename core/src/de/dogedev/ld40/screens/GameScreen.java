@@ -122,6 +122,10 @@ public class GameScreen extends ScreenAdapter {
 //            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
             physicsComponent.body.applyAngularImpulse(5, true);
         }
+        if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);
+//            physicsComponent.body.applyAngularImpulse(5, true);
+        }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 
             physicsComponent.body.applyForceToCenter(new Vector2(0, -400).rotateRad(physicsComponent.body.getAngle()), true);
@@ -129,6 +133,10 @@ public class GameScreen extends ScreenAdapter {
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
             physicsComponent.body.applyAngularImpulse(-5, true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.E)) {
+            physicsComponent.body.applyForceToCenter(new Vector2(400, 0), true);
+//            physicsComponent.body.applyAngularImpulse(-5, true);
         }
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
