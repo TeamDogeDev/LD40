@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.HiddenComponent;
 import de.dogedev.ld40.ashley.components.LookComponent;
 import de.dogedev.ld40.ashley.components.PositionComponent;
 import de.dogedev.ld40.ashley.components.RenderComponent;
+import de.dogedev.ld40.assets.enums.ShaderPrograms;
 
 /**
  * Created by Furuha on 28.01.2016.
@@ -30,6 +32,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.sortedEntities = new Array<>();
+//        batch.setShader(Statics.asset.getShader(ShaderPrograms.EDGE));
     }
 
     @Override
