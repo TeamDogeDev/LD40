@@ -31,8 +31,8 @@ public class AshleyB2DContactListener implements ContactListener {
                 healthComponent.health -= damageComponent.damage;
             }
             if(ComponentMappers.health.has(second) && ComponentMappers.damage.has(first)) {
-                healthComponent = ComponentMappers.health.get(first);
-                damageComponent = ComponentMappers.damage.get(second);
+                healthComponent = ComponentMappers.health.get(second);
+                damageComponent = ComponentMappers.damage.get(first);
 
                 healthComponent.health -= damageComponent.damage;
             }
