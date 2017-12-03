@@ -91,6 +91,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
 
         batch.begin();
         for (int i = 0; i < entities.size(); i++) {
+            batch.setColor(MathUtils.random(0, 1.0f), MathUtils.random(0, 1.0f), MathUtils.random(0, 1.0f), 1.0f);
             Entity e = entities.get(i);
             drawEntity(e, deltaTime);
         }
