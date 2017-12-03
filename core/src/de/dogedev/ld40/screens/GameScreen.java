@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
@@ -26,6 +27,8 @@ import de.dogedev.ld40.assets.enums.ShaderPrograms;
 import de.dogedev.ld40.assets.enums.Textures;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
+import de.dogedev.ld40.overlays.AbstractOverlay;
+import de.dogedev.ld40.overlays.HealthOverlay;
 
 import static de.dogedev.ld40.Statics.ashley;
 
@@ -43,6 +46,7 @@ public class GameScreen extends ScreenAdapter {
     private Batch backgroundBatch;
     private ShaderProgram backgroundShader;
 
+    private Array<AbstractOverlay> overlays;
 
     PhysicsComponent physicsComponent;
 
@@ -101,6 +105,9 @@ public class GameScreen extends ScreenAdapter {
         background = Statics.asset.getTexture(Textures.BACKGROUND);
         backgroundBatch = new SpriteBatch();
         initShader();
+
+        overlays = new Array<>();
+        overlays.add(new HealthOverlay());
     }
 
     private void initShader() {
@@ -132,7 +139,11 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
-
+        for (AbstractOverlay overlay : overlays) {
+            if (overlay.isVisible()) {
+                overlay.render();
+            }
+        }
 
 
 
@@ -189,6 +200,9 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.dispose();
         backgroundBatch.dispose();
         world.dispose();
+        for (AbstractOverlay overlay : overlays) {
+            overlay.dispose();
+        }
 //        batch.dispose();
     }
 }
