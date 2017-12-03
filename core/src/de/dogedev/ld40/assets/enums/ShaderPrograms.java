@@ -1,6 +1,7 @@
 package de.dogedev.ld40.assets.enums;
 
 public enum ShaderPrograms {
+    MENU("shader/background.vert", "shader/menu.frag"),
     BACKGROUND("shader/background.vert", "shader/background.frag"),
     EDGE("shader/pass.vert", "shader/glowColor.frag");
 
