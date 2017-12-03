@@ -113,6 +113,10 @@ public class GameScreen extends ScreenAdapter {
 
         overlays = new Array<>();
         overlays.add(new HealthOverlay());
+
+        for(AbstractOverlay overlay : overlays) {
+            overlay.init();
+        }
     }
 
     private void initShader() {
@@ -146,6 +150,7 @@ public class GameScreen extends ScreenAdapter {
 
         for (AbstractOverlay overlay : overlays) {
             if (overlay.isVisible()) {
+                overlay.update(delta);
                 overlay.render();
             }
         }
