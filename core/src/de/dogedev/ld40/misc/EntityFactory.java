@@ -27,17 +27,18 @@ public class EntityFactory {
     };
 
     static float[] asteroid2Vertices = {
-            -3.0f, -0.6f,
-            -1.5f, -3.3f,
-            1.5f, -3.3f,
-            3.0f, -0.6f,
-            1.5f,  3.3f,
-            -1.5f,  3.3f
+            -3.1f, -1.7f,
+            -2.3f, 2.2f,
+            2.9f, 2.9f,
+            0.0f, -3.0f,
+            3.0f, 0.0f,
+
     };
+
+
 
     public static Entity createEnemy(World world, Vector2 position, float angleRad, float force) {
         Entity entity = ashley.createEntity();
-
         BodyDef entityBody = new BodyDef();
         entityBody.type = BodyDef.BodyType.DynamicBody;
         entityBody.position.set(position);
@@ -49,7 +50,7 @@ public class EntityFactory {
 
         FixtureDef entityFixture = new FixtureDef();
         entityFixture.shape = entityShape;
-        entityFixture.density = 0.4f;
+        entityFixture.density = 0.8f;
 
         PhysicsComponent physicsComponent = ashley.createComponent(PhysicsComponent.class);
         physicsComponent.body = world.createBody(entityBody);
@@ -57,6 +58,7 @@ public class EntityFactory {
         physicsComponent.body.setUserData(entity);
         physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI/2), true);
 //        physicsComponent.body.setAngularDamping(30000);
+//        physicsComponent.body.setLinearDamping(30000);
         physicsComponent.body.setAngularVelocity(1);
         entityShape.dispose();
 
@@ -105,6 +107,8 @@ public class EntityFactory {
         physicsComponent.coneLight = coneLight;
 
         entityShape.dispose();
+
+        coneLight.attachToBody(physicsComponent.body, 0,0, 90);
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
