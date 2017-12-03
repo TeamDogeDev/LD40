@@ -56,7 +56,7 @@ void main() {
       float dist = rand(derpseed) * uDistanceFactor;
       float speed = rand(derpseed*3.99);
       float size = rand(derpseed*225.22) * uStarSize;
-      final += color * makeStar(fragCoord,dist,speed,size);
+      final += color * makeStar(fragCoord,dist,speed*0.25,size);
 
       derpseed.x += 1.54;
       derpseed.y += 0.24;
