@@ -127,6 +127,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     float timeInS = 50.0f;
+    float deltaSum = 0;
 
     @Override
     public void render(float delta) {
@@ -148,11 +149,25 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
+
+
+        deltaSum+=delta;
         if (Gdx.input.isTouched()) {
-            Vector2 angleDiff = new Vector2(2, 0);
-            angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
-            EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(), 50, rayHandler);
-            physicsComponent.body.applyForceToCenter(new Vector2(0, -100).rotateRad(physicsComponent.body.getAngle()), true);
+            if(deltaSum > 0.2){
+                Vector2 angleDiff = new Vector2(3, 0);
+                angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 90);
+                EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle(), 50, rayHandler);
+                physicsComponent.body.applyForceToCenter(new Vector2(0, -100).rotateRad(physicsComponent.body.getAngle()), true);
+
+                angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 120);
+                EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle()+0.1f, 50, rayHandler);
+
+                angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 70);
+                EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle()-0.1f, 50, rayHandler);
+
+                deltaSum = 0;
+            }
+
         }
 
 
@@ -207,6 +222,9 @@ public class GameScreen extends ScreenAdapter {
         if (dirtyEntities.size() > 0) {
             for (Entity entity : dirtyEntities) {
                 if (ComponentMappers.physics.has(entity)) {
+                    if(ComponentMappers.physics.get(entity).light != null){
+                        ComponentMappers.physics.get(entity).light.remove();
+                    }
                     world.destroyBody(ComponentMappers.physics.get(entity).body);
                 }
                 ashley.removeEntity(entity);

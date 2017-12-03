@@ -1,6 +1,7 @@
 package de.dogedev.ld40.misc;
 
 import box2dLight.ConeLight;
+import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
@@ -109,7 +110,7 @@ public class EntityFactory {
         physicsComponent.body.setAngularDamping(2f);
 
         ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
-        physicsComponent.coneLight = coneLight;
+        physicsComponent.light = coneLight;
 
         entityShape.dispose();
 
@@ -161,9 +162,12 @@ public class EntityFactory {
 //        physicsComponent.body.setAngularDamping(2000f);
 
 //        ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
-//        physicsComponent.coneLight = coneLight;
 
         entityShape.dispose();
+
+        PointLight pointLight = new PointLight(rayHandler, 4, new Color(0xffff0055), 10, 50, 50);
+        pointLight.attachToBody(physicsComponent.body, 0,0, 90);
+        physicsComponent.light = pointLight;
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
