@@ -118,7 +118,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void initShader() {
-        backgroundShader = Statics.asset.getShader(ShaderPrograms.MENU);
+        backgroundShader = Statics.asset.getShader(ShaderPrograms.BACKGROUND);
         backgroundBatch.setShader(backgroundShader);
 //        cloudShader.begin();
 //        cloudShader.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
