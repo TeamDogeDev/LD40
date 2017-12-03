@@ -70,6 +70,10 @@ public class EntityFactory {
         DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
         damageComponent.damage = 1.0f;
 
+        ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
+        colorComponent.color = Color.MAGENTA;
+
+        entity.add(colorComponent);
         entity.add(damageComponent);
         entity.add(healthComponent);
         entity.add(ashley.createComponent(AsteroidComponent.class));
@@ -118,7 +122,10 @@ public class EntityFactory {
 //        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
 
 //        entity.add(healthComponent);
+        ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
+        colorComponent.color = Color.GREEN;
 
+        entity.add(colorComponent);
         entity.add(positionComponent);
         entity.add(renderComponent);
         entity.add(ashley.createComponent(PlayerComponent.class));
@@ -166,6 +173,10 @@ public class EntityFactory {
         DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
         damageComponent.damage = 1.0f;
 
+        ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
+        colorComponent.color = Color.YELLOW;
+
+        entity.add(colorComponent);
         entity.add(damageComponent);
         entity.add(healthComponent);
         entity.add(ashley.createComponent(WeakComponent.class));

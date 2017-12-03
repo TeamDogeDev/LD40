@@ -2,6 +2,7 @@ package de.dogedev.ld40.ashley.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,8 +43,8 @@ public class RenderSystem extends EntitySystem implements EntityListener {
     float intensity = 0.0f;
 
     private void updateShader(float delta) {
-        float a = 0.55f;
-        float b = 10;
+        float a = 0.35f;
+        float b = 5;
         float h = 0;
         float k = a;
         intensity += delta;
@@ -90,8 +91,13 @@ public class RenderSystem extends EntitySystem implements EntityListener {
 
         batch.begin();
         for (int i = 0; i < entities.size(); i++) {
-            batch.setColor(1.0f, 0, 0, 1.0f);
+
             Entity e = entities.get(i);
+            if(ComponentMappers.color.has(e)){
+                batch.setColor(ComponentMappers.color.get(e).color);
+            } else {
+                batch.setColor(Color.WHITE);
+            }
             drawEntity(e, deltaTime);
         }
         batch.end();
