@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.HiddenComponent;
 import de.dogedev.ld40.ashley.components.PositionComponent;
 import de.dogedev.ld40.ashley.components.RenderComponent;
+import de.dogedev.ld40.assets.enums.ShaderPrograms;
 
 /**
  * Created by Furuha on 28.01.2016.
@@ -30,7 +33,26 @@ public class RenderSystem extends EntitySystem implements EntityListener {
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.sortedEntities = new Array<>();
+        shader = Statics.asset.getShader(ShaderPrograms.EDGE);
         batch.setShader(shader);
+
+
+
+    }
+
+    float intensity = 0.0f;
+
+    private void updateShader(float delta) {
+        float a = 0.15f;
+        float b = 10;
+        float h = 0;
+        float k = a;
+        intensity += delta;
+
+        float value = (a * MathUtils.sin(b*(intensity-h)))+k;
+        shader.begin();
+        shader.setUniformf("iIntensity", value);
+        shader.end();
     }
 
     @Override
@@ -58,7 +80,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void update(float deltaTime) {
-
+        updateShader(deltaTime);
         try {
             sortedEntities.sort();
         } catch (Exception e) {
