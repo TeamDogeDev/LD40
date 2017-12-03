@@ -127,7 +127,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     float timeInS = 50.0f;
-    float deltaSum = 0;
+    float deltaSum = Float.MAX_VALUE;
 
     @Override
     public void render(float delta) {
