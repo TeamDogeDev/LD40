@@ -53,6 +53,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void init() {
         ashley.removeAllEntities();
+        ashley.getSystems().iterator().forEachRemaining(system -> ashley.removeSystem(system));
 
         camera = new OrthographicCamera();
         camera.zoom = 1f;
@@ -182,6 +183,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         rayHandler.dispose();
         backgroundBatch.dispose();
+        world.dispose();
 //        batch.dispose();
     }
 }
