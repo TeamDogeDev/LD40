@@ -9,14 +9,21 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.systems.*;
+import de.dogedev.ld40.assets.enums.ShaderPrograms;
+import de.dogedev.ld40.assets.enums.Textures;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
 
@@ -31,6 +38,10 @@ public class GameScreen extends ScreenAdapter {
     private Box2DDebugRenderer debugRenderer;
     private World world;
     private RayHandler rayHandler;
+
+    private Texture background;
+    private Batch backgroundBatch;
+    private ShaderProgram backgroundShader;
 
 
     PhysicsComponent physicsComponent;
@@ -82,33 +93,43 @@ public class GameScreen extends ScreenAdapter {
 
         debugRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 
+        background = Statics.asset.getTexture(Textures.BACKGROUND);
+        backgroundBatch = new SpriteBatch();
+        initShader();
     }
 
+    private void initShader() {
+        backgroundShader = Statics.asset.getShader(ShaderPrograms.BACKGROUND);
+        backgroundBatch.setShader(backgroundShader);
+//        cloudShader.begin();
+//        cloudShader.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        cloudShader.setUniformf("cloudsize", .4f);
+//        cloudShader.end();
+    }
+
+    float timeInS = 0.0f;
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        timeInS+=delta;
+        backgroundShader.begin();
+        backgroundShader.setUniformf("iTime", timeInS);
+        backgroundShader.end();
+
+        backgroundBatch.begin();
+        backgroundBatch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        backgroundBatch.end();
+//
         ashley.update(delta);
-//        debugRenderer.render(world, debugCamera.combined);
+        debugRenderer.render(world, debugCamera.combined);
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
 
-//        if(Gdx.input.isTouched()){
-//            Vector3 unproject = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-//            float x = unproject.x / PhysicsSystem.PIXEL_PER_METER;
-//            float y = unproject.y / PhysicsSystem.PIXEL_PER_METER;
-//
-//            Array<Body> bodies = new Array<>();
-//            world.getBodies(bodies);
-//            for(Body body: bodies){
-//                Vector2 force;
-//                Vector2 sub = body.getPosition().sub(new Vector2(x, y));
-//                force = sub.nor().scl(80000);
-//                body.applyForce(force, new Vector2(x, y), true);
-//            }
-//        }
+
+
 
         if (Gdx.input.isTouched()) {
             Vector2 angleDiff = new Vector2(2, 0);
@@ -160,6 +181,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         rayHandler.dispose();
+        backgroundBatch.dispose();
 //        batch.dispose();
     }
 }
