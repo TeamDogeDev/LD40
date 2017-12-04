@@ -2,6 +2,7 @@ package de.dogedev.ld40.screens;
 
 import box2dLight.ConeLight;
 import box2dLight.Light;
+import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -47,6 +48,7 @@ public class GameScreen extends ScreenAdapter {
     private Box2DDebugRenderer debugRenderer;
     private World world;
     private RayHandler rayHandler;
+    private RayHandler rayHandler2;
 
     private Texture background;
     private Batch backgroundBatch;
@@ -98,6 +100,14 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setAmbientLight(0.01f, 0.01f, 0.01f, 0.5f);
         rayHandler.setBlurNum(3);
         rayHandler.setShadows(true);
+
+        rayHandler2 = new RayHandler(new World(new Vector2(0, 0), true));
+        rayHandler2.setShadows(false);
+        rayHandler2.setBlurNum(3);
+        new PointLight(rayHandler2, 128, new Color(0xff000055), 200, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER , Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER);
+        new PointLight(rayHandler2, 128, new Color(0xffff0033), 200, 0, 0);
+        new PointLight(rayHandler2, 128, new Color(0x0000ff33), 200, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER, 0);
+        new PointLight(rayHandler2, 128, new Color(0x00ff0033), 200, 0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER);
 
 //        DirectionalLight directionalLight = new DirectionalLight(rayHandler, 512, new Color(0,0.01f,0.01f,0.5f), +250);
 
@@ -164,6 +174,8 @@ public class GameScreen extends ScreenAdapter {
         ScoreManager.addTime(delta);
         ashley.update(delta);
 //        debugRenderer.render(world, debugCamera.combined);
+        rayHandler2.setCombinedMatrix(debugCamera);
+        rayHandler2.updateAndRender();
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
