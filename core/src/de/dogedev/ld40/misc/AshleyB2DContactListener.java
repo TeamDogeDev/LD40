@@ -37,30 +37,19 @@ public class AshleyB2DContactListener implements ContactListener {
 
             if(ComponentMappers.asteroid.has(first) && ComponentMappers.asteroid.has(second)) {
                 // asteroid <-> asteroid
-                SoundManager.playAsteroidExplosion();
+                SoundManager.playShipHit();
             }
 
             if(ComponentMappers.asteroid.has(first) && ComponentMappers.bullet.has(second)) {
                 // first: asteroid <-> second: bullet
-                ScoreManager.addKill();
-                SoundManager.playBulletHit();
-                SoundManager.playAsteroidExplosion();
-            }
-
-            if(ComponentMappers.asteroid.has(second) && ComponentMappers.bullet.has(first)) {
-                // first: bullet <-> second asteroid
-                ScoreManager.addKill();
-                SoundManager.playBulletHit();
-                SoundManager.playAsteroidExplosion();
-            }
-
-
-            if(ComponentMappers.health.has(first) && ComponentMappers.damage.has(second)) {
                 healthComponent = ComponentMappers.health.get(first);
                 damageComponent = ComponentMappers.damage.get(second);
 
                 healthComponent.health -= damageComponent.damage;
+
                 ScoreManager.addKill();
+                SoundManager.playBulletHit();
+                SoundManager.playAsteroidExplosion();
             }
 
             if(ComponentMappers.asteroid.has(second) && ComponentMappers.bullet.has(first)) {
@@ -70,7 +59,27 @@ public class AshleyB2DContactListener implements ContactListener {
 
                 healthComponent.health -= damageComponent.damage;
                 ScoreManager.addKill();
+                SoundManager.playBulletHit();
+                SoundManager.playAsteroidExplosion();
             }
+
+
+//            if(ComponentMappers.health.has(first) && ComponentMappers.damage.has(second)) {
+//                healthComponent = ComponentMappers.health.get(first);
+//                damageComponent = ComponentMappers.damage.get(second);
+//
+//                healthComponent.health -= damageComponent.damage;
+//                ScoreManager.addKill();
+//            }
+//
+//            if(ComponentMappers.asteroid.has(second) && ComponentMappers.bullet.has(first)) {
+//                // first: bullet <-> second asteroid
+//                healthComponent = ComponentMappers.health.get(second);
+//                damageComponent = ComponentMappers.damage.get(first);
+//
+//                healthComponent.health -= damageComponent.damage;
+//                ScoreManager.addKill();
+//            }
 
 
 //            if(ComponentMappers.health.has(first) && ComponentMappers.damage.has(second)) {
