@@ -247,7 +247,7 @@ public class EntityFactory {
         entity.add(colorComponent);
         entity.add(damageComponent);
         entity.add(healthComponent);
-        entity.add(ashley.createComponent(WeakComponent.class));
+//        entity.add(ashley.createComponent(WeakComponent.class));
         entity.add(ashley.createComponent(BulletComponent.class));
         entity.add(positionComponent);
         entity.add(renderComponent);
