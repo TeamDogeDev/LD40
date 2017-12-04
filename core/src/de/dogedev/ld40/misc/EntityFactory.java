@@ -52,12 +52,12 @@ public class EntityFactory {
     private static Color[] colors = {
             new Color(0xff000055),
             new Color(0xffff0055),
-            new Color(0xaa00ff55),
+            new Color(0x0000ff55),
             new Color(0xff00ff55),
-            new Color(0xaaff0055),
-            new Color(0xffaa0055),
-            new Color(0xaa000055),
-            new Color(0xff0f0a65)
+            new Color(0xffa50055),
+            new Color(0xae00ff55),
+            new Color(0x00bfff55),
+            new Color(0x8700ff65)
     };
 
     private static float[] asteroidTexture2Vertices(Textures textures) {
@@ -249,6 +249,7 @@ public class EntityFactory {
 
 
     private static Color getRandomColor() {
-        return colors[MathUtils.random(0, colors.length - 1)];
+        Color color = colors[MathUtils.random(0, colors.length - 1)];
+        return color;
     }
 }

@@ -9,7 +9,7 @@ void main() {
     vec4 c = vec4(0.);
 
 	 c =  	// color
-		 vec4(p*.5+.5,1.,1)
+		 vec4(p*.5+.5,0.,1)
 		// rect
 		 / ((abs((abs( p.x+p.y )+abs (p.x-p.y) )/1.5-1.)/.15)*2.1-vec4(.2))
 
