@@ -2,11 +2,16 @@ package de.dogedev.ld40.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Disposable;
+import de.dogedev.ld40.assets.enums.BitmapFonts;
+import de.dogedev.ld40.assets.enums.Particles;
 import de.dogedev.ld40.assets.enums.ShaderPrograms;
 import de.dogedev.ld40.assets.enums.Textures;
 
@@ -17,6 +22,22 @@ public class AssetLoader implements Disposable {
 
     public AssetLoader() {
          loadTextures();
+         loadFonts();
+         loadParticles();
+    }
+
+    private void loadParticles() {
+        for(Particles particle : Particles.values()) {
+            ParticleEffectLoader.ParticleEffectParameter params = new ParticleEffectLoader.ParticleEffectParameter();
+            params.imagesDir = Gdx.files.internal(particle.imageDir);
+            manager.load(particle.effectFile, ParticleEffect.class, params);
+        }
+    }
+
+    private void loadFonts() {
+        for(BitmapFonts font : BitmapFonts.values()) {
+            manager.load(font.name, BitmapFont.class);
+        }
     }
 
     private void loadTextures() {
@@ -41,6 +62,10 @@ public class AssetLoader implements Disposable {
         return new TextureRegion(manager.get(texture.name, Texture.class));
     }
 
+    public BitmapFont getFont(BitmapFonts font) {
+        return manager.get(font.name, BitmapFont.class);
+    }
+
     public Texture getTexture(Textures texture) {
         return manager.get(texture.name, Texture.class);
     }
@@ -56,5 +81,9 @@ public class AssetLoader implements Disposable {
     @Override
     public void dispose() {
         manager.dispose();
+    }
+
+    public ParticleEffect getParticleEffect(Particles effect) {
+        return manager.get(effect.effectFile, ParticleEffect.class);
     }
 }

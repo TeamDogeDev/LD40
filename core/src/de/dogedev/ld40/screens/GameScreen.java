@@ -20,17 +20,21 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.systems.*;
+import de.dogedev.ld40.assets.ParticlePool;
 import de.dogedev.ld40.assets.enums.ShaderPrograms;
 import de.dogedev.ld40.assets.enums.Textures;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
 import de.dogedev.ld40.misc.EntityFactory;
 import de.dogedev.ld40.misc.ScoreManager;
 import de.dogedev.ld40.misc.SoundManager;
+import de.dogedev.ld40.overlays.AbstractOverlay;
+import de.dogedev.ld40.overlays.ParticleOverlay;
 
 import static de.dogedev.ld40.Statics.ashley;
 
@@ -51,6 +55,8 @@ public class GameScreen extends ScreenAdapter {
     PhysicsComponent physicsComponent;
     private float lastSpeed;
     private ConeLight engineLight;
+
+    private Array<AbstractOverlay> overlays = new Array<>();
 
 
     public GameScreen() {
@@ -116,6 +122,12 @@ public class GameScreen extends ScreenAdapter {
         backgroundBatch = new SpriteBatch();
         initShader();
 
+        overlays.add(new ParticleOverlay());
+
+        for(AbstractOverlay overlay : overlays) {
+            overlay.init();
+        }
+
     }
 
     private void initShader() {
@@ -169,6 +181,10 @@ public class GameScreen extends ScreenAdapter {
                 deltaSum = 0;
             }
 
+        }
+
+        for(AbstractOverlay overlay : overlays) {
+            overlay.render(delta);
         }
 
 
@@ -246,5 +262,9 @@ public class GameScreen extends ScreenAdapter {
         backgroundBatch.dispose();
         world.dispose();
 //        batch.dispose();
+        for(AbstractOverlay overlay : overlays) {
+            overlay.dispose();
+        }
+
     }
 }

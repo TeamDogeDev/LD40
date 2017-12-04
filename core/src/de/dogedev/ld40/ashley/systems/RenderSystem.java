@@ -34,7 +34,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.sortedEntities = new Array<>();
-        shader = Statics.asset.getShader(ShaderPrograms.EDGE);
+        shader = Statics.asset.getShader(ShaderPrograms.GLOW);
         batch.setShader(shader);
 
 
