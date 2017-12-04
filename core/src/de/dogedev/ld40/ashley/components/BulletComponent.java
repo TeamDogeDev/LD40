@@ -8,10 +8,10 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class BulletComponent implements Component, Pool.Poolable {
 
-    public float time = 1.5f;
+    public float time = 0.5f;
 
     @Override
     public void reset() {
-        time = 5;
+        time = 0.5f;
     }
 }
