@@ -1,7 +1,6 @@
 package de.dogedev.ld40.misc;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DamageComponent;
@@ -26,24 +25,31 @@ public class AshleyB2DContactListener implements ContactListener {
 
             if(ComponentMappers.player.has(first) && ComponentMappers.asteroid.has(second)) {
                 // first: player <-> second: asteroid
+                SoundManager.playShipHit();
             }
 
             if(ComponentMappers.player.has(second) && ComponentMappers.asteroid.has(first)) {
                 // first: asteroid <-> second: player
+                SoundManager.playShipHit();
             }
 
             if(ComponentMappers.asteroid.has(first) && ComponentMappers.asteroid.has(second)) {
                 // asteroid <-> asteroid
+                SoundManager.playAsteroidExplosion();
             }
 
             if(ComponentMappers.asteroid.has(first) && ComponentMappers.bullet.has(second)) {
                 // first: asteroid <-> second: bullet
                 ScoreManager.addKill();
+                SoundManager.playBulletHit();
+                SoundManager.playAsteroidExplosion();
             }
 
             if(ComponentMappers.asteroid.has(second) && ComponentMappers.bullet.has(first)) {
                 // first: bullet <-> second asteroid
                 ScoreManager.addKill();
+                SoundManager.playBulletHit();
+                SoundManager.playAsteroidExplosion();
             }
 
             HealthComponent healthComponent;
