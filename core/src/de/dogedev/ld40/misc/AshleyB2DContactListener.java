@@ -1,6 +1,7 @@
 package de.dogedev.ld40.misc;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DamageComponent;
@@ -11,16 +12,40 @@ public class AshleyB2DContactListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
         if (contact.getFixtureA().getBody().getUserData() instanceof Entity) {
-            col((Entity) contact.getFixtureA().getBody().getUserData(), contact.getFixtureB());
+            collision((Entity) contact.getFixtureA().getBody().getUserData(), contact.getFixtureB());
         } else if (contact.getFixtureB().getBody().getUserData() instanceof Entity) {
-            col((Entity) contact.getFixtureB().getBody().getUserData(), contact.getFixtureA());
+            collision((Entity) contact.getFixtureB().getBody().getUserData(), contact.getFixtureA());
         }
     }
 
-    private void col(Entity first, Fixture col) {
+    private void collision(Entity first, Fixture col) {
         if(col.getBody().getUserData() instanceof Entity) {
             // 2 entities coll
             Entity second = (Entity) col.getBody().getUserData();
+
+
+            if(ComponentMappers.player.has(first) && ComponentMappers.asteroid.has(second)) {
+                // first: player <-> second: asteroid
+            }
+
+            if(ComponentMappers.player.has(second) && ComponentMappers.asteroid.has(first)) {
+                // first: asteroid <-> second: player
+            }
+
+            if(ComponentMappers.asteroid.has(first) && ComponentMappers.asteroid.has(second)) {
+                // asteroid <-> asteroid
+            }
+
+            if(ComponentMappers.asteroid.has(first) && ComponentMappers.bullet.has(second)) {
+                // first: asteroid <-> second: bullet
+                ScoreManager.addKill();
+            }
+
+            if(ComponentMappers.asteroid.has(second) && ComponentMappers.bullet.has(first)) {
+                // first: bullet <-> second asteroid
+                ScoreManager.addKill();
+            }
+
             HealthComponent healthComponent;
             DamageComponent damageComponent;
 
@@ -39,7 +64,7 @@ public class AshleyB2DContactListener implements ContactListener {
 
             if(ComponentMappers.bullet.has(first) && ComponentMappers.asteroid.has(second) ||
                 ComponentMappers.bullet.has(second) && ComponentMappers.asteroid.has(first)){
-                ScoreManager.addKill();
+//                ScoreManager.addKill();
             }
         }
     }
