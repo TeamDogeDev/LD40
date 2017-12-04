@@ -22,7 +22,7 @@ public class LoadingScreen extends ScreenAdapter {
 
     private void update(float delta) {
         if(Statics.asset.load()) {
-            LDGame.game.setCurrentScreen(new GameScreen());
+            LDGame.game.setCurrentScreen(new MenuScreen());
         }
     }
 
