@@ -1,6 +1,7 @@
 package de.dogedev.ld40.ashley.systems;
 
 import box2dLight.RayHandler;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
@@ -8,21 +9,38 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import de.dogedev.ld40.misc.EntityFactory;
 
-public class EnemySpawnSystem extends IntervalSystem {
+public class EnemySpawnSystem extends EntitySystem {
+
+    private float interval;
+    private float accumulator;
 
     private World world;
     private RayHandler rayHandler;
 
     public EnemySpawnSystem(float interval, int priority, World world, RayHandler rayHandler) {
-        super(interval, priority);
+        super(priority);
+        this.interval = interval;
         this.world = world;
         this.rayHandler = rayHandler;
     }
 
     @Override
-    protected void updateInterval() {
+    public void update(float deltaTime) {
+        accumulator += deltaTime;
 
+        while (accumulator >= interval) {
+            accumulator -= interval;
+            updateInterval();
+        }
+    }
 
+    public void setUpdateInterval(float interval) {
+        this.interval = interval;
+    }
+
+    private void updateInterval() {
+
+        System.out.println("UPDATE");
         int xPosition = 0;
         int yPosition = 0;
 
@@ -47,5 +65,9 @@ public class EnemySpawnSystem extends IntervalSystem {
 
         EntityFactory.createEnemy(world, new Vector2(xPosition, yPosition), angle, 500, rayHandler);
 
+    }
+
+    public void decreaseUpdateInterval() {
+//        interval -= 0.1;
     }
 }

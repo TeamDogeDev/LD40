@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.PlayerComponent;
@@ -24,6 +25,7 @@ import de.dogedev.ld40.misc.ScoreManager;
 
 public class OverlayRenderSystem extends EntitySystem {
 
+    private static boolean flashTextVisible = false;
     int[] healthLut = {0x00ff0055,
             0x05ff0055,
             0x0bfe0055,
@@ -125,21 +127,35 @@ public class OverlayRenderSystem extends EntitySystem {
             0xff050055,
             0xff000000};
 
+
+    private static Array<Color> flashColors = new Array<>();
     private final ShaderProgram shader;
     private ImmutableArray<Entity> entites;
     private Batch batch;
-    private float intensity = 0.0f;
+    private float deltaSum = 0.0f;
     private Texture shieldTexture;
+    private Texture flashTexture;
     private BitmapFont font;
+
+    private static Color flashColor = Color.RED;
 
     public OverlayRenderSystem(int priority) {
         super(priority);
         shader = Statics.asset.getShader(ShaderPrograms.GLOW);
         shieldTexture = Statics.asset.getTexture(Textures.SHIELD);
+        flashTexture = Statics.asset.getTexture(Textures.FLASHTEXT);
         font = Statics.asset.getFont(BitmapFonts.GAMEFONT);
         batch = new SpriteBatch();
         batch.setShader(shader);
+
+        flashColors.add(Color.RED);
+        flashColors.add(Color.YELLOW);
+        flashColors.add(Color.CYAN);
+        flashColors.add(Color.BLUE);
+        flashColors.add(Color.PURPLE);
+        flashColors.add(Color.MAGENTA);
     }
+
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -147,14 +163,14 @@ public class OverlayRenderSystem extends EntitySystem {
     }
 
     void updateShader(float delta) {
-        intensity += delta;
+        deltaSum += delta;
 
         float a = 0.15f;
         float b = 3;
         float h = 0;
         float k = a;
 
-        float value = (a * MathUtils.sin(b * (intensity - h))) + k;
+        float value = (a * MathUtils.sin(b * (deltaSum - h))) + k;
         shader.begin();
         shader.setUniformf("iIntensity", value);
         shader.end();
@@ -171,6 +187,22 @@ public class OverlayRenderSystem extends EntitySystem {
         return color;
     }
 
+    private static Color randomFlashColor() {
+        return flashColors.get(MathUtils.random(0, flashColors.size-1));
+    }
+    private static float flashCounter = 0.0f;
+    public static void flashText() {
+        if(!flashTextVisible) {
+            Color newColor  = randomFlashColor();
+            while(flashColor == newColor) {
+                newColor = randomFlashColor();
+            }
+            flashColor = newColor;
+            flashTextVisible = true;
+        }
+    }
+
+
     @Override
     public void update(float deltaTime) {
         updateShader(deltaTime);
@@ -179,7 +211,7 @@ public class OverlayRenderSystem extends EntitySystem {
         batch.setShader(shader);
         for (Entity e : entites) {
             pc = ComponentMappers.position.get(e);
-            if(ComponentMappers.health.has(e)) {
+            if (ComponentMappers.health.has(e)) {
                 float playerHealth = ComponentMappers.health.get(e).health;
                 batch.setColor(healthToColor(playerHealth));
             } else {
@@ -187,6 +219,17 @@ public class OverlayRenderSystem extends EntitySystem {
             }
             batch.draw(shieldTexture, pc.x - shieldTexture.getWidth() / 2, pc.y - Statics.asset.getTexture(Textures.SHIELD).getHeight() / 2);
         }
+        if(flashTextVisible) {
+            batch.setColor(flashColor);
+            batch.draw(flashTexture, (Gdx.graphics.getWidth() - flashTexture.getWidth()) / 2, (Gdx.graphics.getHeight() - flashTexture.getHeight()) / 2);
+            flashCounter+= deltaTime;
+        }
+
+        if(flashCounter >= 1.0f) {
+            flashTextVisible = false;
+            flashCounter = 0.0f;
+        }
+
         batch.setShader(null);
 //        font.setColor(new Color(0xff000055));
         font.draw(batch, "Score " + ScoreManager.getCurrentTime(), 10, Gdx.graphics.getHeight() - 10);

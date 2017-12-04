@@ -65,7 +65,6 @@ public class GameScreen extends ScreenAdapter {
     public void init() {
 
         SoundManager.init();
-        ScoreManager.init();
 
         SoundManager.startMusic();
 
@@ -101,10 +100,13 @@ public class GameScreen extends ScreenAdapter {
 
 //        DirectionalLight directionalLight = new DirectionalLight(rayHandler, 512, new Color(0,0.01f,0.01f,0.5f), +250);
 
+        EnemySpawnSystem enemySpawnSystem = new EnemySpawnSystem(1f, 3, world, rayHandler);
 
         ashley.addSystem(new PhysicsSystem(world, 1));
-        ashley.addSystem(new EnemySpawnSystem(0.5f, 3, world, rayHandler));
+        ashley.addSystem(enemySpawnSystem);
         ashley.addSystem(new HealthSystem());
+
+        ScoreManager.init(enemySpawnSystem);
 
         world.setContactListener(new AshleyB2DContactListener());
 
@@ -187,8 +189,6 @@ public class GameScreen extends ScreenAdapter {
             }
 
         }
-
-
 
 
         boolean engine = false;

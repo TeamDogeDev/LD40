@@ -7,6 +7,7 @@ public enum Textures {
     ASTEROID_2("textures/asteroid2.png"),
     ENEMY("textures/enemy.png"),
     SHIELD("textures/circle.png"),
+    FLASHTEXT("textures/flash.png"),
     BACKGROUND("textures/background.png");
 
     public String name;
