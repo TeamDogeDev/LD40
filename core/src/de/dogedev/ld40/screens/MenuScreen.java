@@ -78,7 +78,7 @@ public class MenuScreen extends ScreenAdapter {
         }
         batch.end();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             // previous
             if(selectedMenuPoint.equalsIgnoreCase("Start")) {
                 selectedMenuPoint = "Exit";
@@ -87,7 +87,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if(selectedMenuPoint.equalsIgnoreCase("Exit")) {
                 Gdx.app.exit();
             } else {
