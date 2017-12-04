@@ -1,5 +1,6 @@
 package de.dogedev.ld40.overlays;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
@@ -11,7 +12,8 @@ public class ParticleOverlay extends AbstractOverlay {
     private ShaderProgram shader;
     float intensity = 0.0f;
 
-    public ParticleOverlay() {
+    public ParticleOverlay(OrthographicCamera camera) {
+        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override

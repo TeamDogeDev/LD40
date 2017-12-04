@@ -110,6 +110,9 @@ public class GameScreen extends ScreenAdapter {
 //        EntityFactory.createBase(world, new Vector2(Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER / 2, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER / 2), 0);
 //        EntityFactory.createEnemy(world, new Vector2(10, 50), 45 * MathUtils.degreesToRadians, 500);
 
+//        EntityFactory.createEnemy(world, new Vector2(10, 50), 0 * MathUtils.degreesToRadians, 0, rayHandler);
+
+
         Entity player = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
         physicsComponent = ComponentMappers.physics.get(player);
 
@@ -122,7 +125,7 @@ public class GameScreen extends ScreenAdapter {
         backgroundBatch = new SpriteBatch();
         initShader();
 
-        overlays.add(new ParticleOverlay());
+        overlays.add(new ParticleOverlay(camera));
 
         for(AbstractOverlay overlay : overlays) {
             overlay.init();
@@ -133,14 +136,11 @@ public class GameScreen extends ScreenAdapter {
     private void initShader() {
         backgroundShader = Statics.asset.getShader(ShaderPrograms.BACKGROUND);
         backgroundBatch.setShader(backgroundShader);
-//        cloudShader.begin();
-//        cloudShader.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        cloudShader.setUniformf("cloudsize", .4f);
-//        cloudShader.end();
     }
 
     float timeInS = 50.0f;
     float deltaSum = Float.MAX_VALUE;
+
 
     @Override
     public void render(float delta) {
@@ -256,6 +256,9 @@ public class GameScreen extends ScreenAdapter {
     public void resize(int width, int height) {
         camera.viewportHeight = height;
         camera.viewportWidth = width;
+        backgroundShader.begin();
+        backgroundShader.setUniformf("iResolution", width, height);
+        backgroundShader.end();
     }
 
     @Override
@@ -263,7 +266,6 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.dispose();
         backgroundBatch.dispose();
         world.dispose();
-//        batch.dispose();
         for(AbstractOverlay overlay : overlays) {
             overlay.dispose();
         }

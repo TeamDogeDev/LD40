@@ -19,14 +19,16 @@ import static de.dogedev.ld40.Statics.asset;
 
 public class EntityFactory {
 
-    public static void createPlayer() {}
+    public static void createPlayer() {
+    }
+
     static float[] shipVertices = {
             -3.0f, -0.6f,
             -1.5f, -3.3f,
-             1.5f, -3.3f,
-             3.0f, -0.6f,
-             1.5f,  3.3f,
-            -1.5f,  3.3f
+            1.5f, -3.3f,
+            3.0f, -0.6f,
+            1.5f, 3.3f,
+            -1.5f, 3.3f
     };
 
     static float[] asteroid2Vertices = {
@@ -36,6 +38,15 @@ public class EntityFactory {
             0.0f, -3.0f,
             3.0f, 0.0f,
 
+    };
+
+    private static float[] asteroid1Vertices = {
+            -3.0f, 0.0f,
+            -2.0f, -2.0f,
+            0.0f, -2.0f,
+            2.4f, -3.0f,
+            3.0f, 2.0f,
+            -2.0f, 3.0f
     };
 
     private static Color[] colors = {
@@ -49,13 +60,25 @@ public class EntityFactory {
             new Color(0xff0f0a65)
     };
 
+    private static float[] asteroidTexture2Vertices(Textures textures) {
+        float[] value = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+        switch (textures) {
+            case ASTEROID_1:
+                value = asteroid1Vertices;
+                break;
+            case ASTEROID_2:
+                value = asteroid2Vertices;
+                break;
+        }
+        return value;
+    }
+
     public static Entity createEnemy(World world, Vector2 position, float angleRad, float force, RayHandler rayHandler) {
 
         boolean b = MathUtils.randomBoolean();
 
-        Textures asteroid = Textures.ASTEROID_1;
-
-        if(b) asteroid = Textures.ASTEROID_2;
+        Textures asteroidTexture = Textures.ASTEROID_1;
+        if(b) asteroidTexture = Textures.ASTEROID_2;
 
         Entity entity = ashley.createEntity();
         BodyDef entityBody = new BodyDef();
@@ -64,7 +87,7 @@ public class EntityFactory {
         entityBody.angle = angleRad;
 
         PolygonShape entityShape = new PolygonShape();
-        entityShape.set(asteroid2Vertices);
+        entityShape.set(asteroidTexture2Vertices(asteroidTexture));
 //        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
 
         FixtureDef entityFixture = new FixtureDef();
@@ -75,7 +98,7 @@ public class EntityFactory {
         physicsComponent.body = world.createBody(entityBody);
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
-        physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI/2), true);
+        physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI / 2), true);
 //        physicsComponent.body.setAngularDamping(30000);
 //        physicsComponent.body.setLinearDamping(30000);
         physicsComponent.body.setAngularVelocity(1);
@@ -87,12 +110,12 @@ public class EntityFactory {
 
 
         PointLight pointLight = new PointLight(rayHandler, 30, c, 25, 50, 50);
-        pointLight.attachToBody(physicsComponent.body, 0,0, 90);
+        pointLight.attachToBody(physicsComponent.body, 0, 0, 90);
         physicsComponent.lights.add(pointLight);
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
-        renderComponent.region = asset.getTextureRegion(asteroid);
+        renderComponent.region = asset.getTextureRegion(asteroidTexture);
 
         HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
         DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
@@ -137,7 +160,7 @@ public class EntityFactory {
         physicsComponent.body.setAngularDamping(2f);
 
         PointLight pointLight = new PointLight(rayHandler, 25, new Color(0x00ff0055), 50, 50, 50);
-        pointLight.attachToBody(physicsComponent.body, 0,0, 90);
+        pointLight.attachToBody(physicsComponent.body, 0, 0, 90);
         physicsComponent.lights.add(pointLight);
 
         ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
@@ -145,7 +168,7 @@ public class EntityFactory {
 
         entityShape.dispose();
 
-        coneLight.attachToBody(physicsComponent.body, 0,0, 90);
+        coneLight.attachToBody(physicsComponent.body, 0, 0, 90);
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
@@ -176,7 +199,7 @@ public class EntityFactory {
         entityBody.angle = angleRad;
 
         PolygonShape entityShape = new PolygonShape();
-        entityShape.setAsBox(0.25f,0.5f);
+        entityShape.setAsBox(0.25f, 0.5f);
 //        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
 
         FixtureDef entityFixture = new FixtureDef();
@@ -187,7 +210,7 @@ public class EntityFactory {
         physicsComponent.body = world.createBody(entityBody);
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
-        physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI/2), true);
+        physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI / 2), true);
         physicsComponent.body.setFixedRotation(true);
 //        physicsComponent.body.setLinearDamping(0.8f);
 //        physicsComponent.body.setAngularDamping(2000f);
@@ -197,7 +220,7 @@ public class EntityFactory {
         entityShape.dispose();
 
         PointLight pointLight = new PointLight(rayHandler, 4, new Color(0xffff0055), 10, 50, 50);
-        pointLight.attachToBody(physicsComponent.body, 0,0, 90);
+        pointLight.attachToBody(physicsComponent.body, 0, 0, 90);
         physicsComponent.lights.add(pointLight);
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
@@ -226,6 +249,6 @@ public class EntityFactory {
 
 
     private static Color getRandomColor() {
-        return colors[MathUtils.random(0, colors.length-1)];
+        return colors[MathUtils.random(0, colors.length - 1)];
     }
 }

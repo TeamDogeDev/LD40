@@ -11,9 +11,7 @@ varying vec2 v_texCoord0;
 //uniform float cloudsize;
 
 uniform float iTime;
-
-// UNIFORMS
-vec2 iResolution = vec2(1280, 768);
+uniform vec2 iResolution;
 
 float uDistanceFactor = 1250.0;
 float uStarSize = 9.0;
