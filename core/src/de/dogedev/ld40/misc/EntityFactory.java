@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld40.ashley.components.*;
 import de.dogedev.ld40.assets.enums.Textures;
 
@@ -36,9 +37,18 @@ public class EntityFactory {
 
     };
 
+    private static Color[] colors = {
+            new Color(0xff000055),
+            new Color(0xffff0055),
+            new Color(0xaa00ff55),
+            new Color(0xff00ff55),
+            new Color(0xaaff0055),
+            new Color(0xffaa0055),
+            new Color(0xaa000055),
+            new Color(0xff0f0a65)
+    };
 
-
-    public static Entity createEnemy(World world, Vector2 position, float angleRad, float force) {
+    public static Entity createEnemy(World world, Vector2 position, float angleRad, float force, RayHandler rayHandler) {
         Entity entity = ashley.createEntity();
         BodyDef entityBody = new BodyDef();
         entityBody.type = BodyDef.BodyType.DynamicBody;
@@ -63,6 +73,15 @@ public class EntityFactory {
         physicsComponent.body.setAngularVelocity(1);
         entityShape.dispose();
 
+
+        // Pick random color
+        Color c = getRandomColor();
+
+
+        PointLight pointLight = new PointLight(rayHandler, 30, c, 25, 50, 50);
+        pointLight.attachToBody(physicsComponent.body, 0,0, 90);
+        physicsComponent.lights.add(pointLight);
+
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
         renderComponent.region = asset.getTextureRegion(Textures.ASTEROID_2);
@@ -72,7 +91,7 @@ public class EntityFactory {
         damageComponent.damage = 1.0f;
 
         ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
-        colorComponent.color = Color.MAGENTA;
+        colorComponent.color = c;
 
         entity.add(colorComponent);
         entity.add(damageComponent);
@@ -109,8 +128,12 @@ public class EntityFactory {
         physicsComponent.body.setLinearDamping(0.8f);
         physicsComponent.body.setAngularDamping(2f);
 
+        PointLight pointLight = new PointLight(rayHandler, 25, new Color(0x00ff0055), 50, 50, 50);
+        pointLight.attachToBody(physicsComponent.body, 0,0, 90);
+        physicsComponent.lights.add(pointLight);
+
         ConeLight coneLight = new ConeLight(rayHandler, 128, new Color(0.5f, 0.1f, 1, 1), 120, 50, 50, 0, 20);
-        physicsComponent.light = coneLight;
+        physicsComponent.lights.add(coneLight);
 
         entityShape.dispose();
 
@@ -124,7 +147,7 @@ public class EntityFactory {
 
 //        entity.add(healthComponent);
         ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
-        colorComponent.color = Color.GREEN;
+        colorComponent.color = new Color(0x00ff0099);
 
         entity.add(colorComponent);
         entity.add(positionComponent);
@@ -167,7 +190,7 @@ public class EntityFactory {
 
         PointLight pointLight = new PointLight(rayHandler, 4, new Color(0xffff0055), 10, 50, 50);
         pointLight.attachToBody(physicsComponent.body, 0,0, 90);
-        physicsComponent.light = pointLight;
+        physicsComponent.lights.add(pointLight);
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
@@ -226,5 +249,9 @@ public class EntityFactory {
 
         ashley.addEntity(entity);
         return entity;
+    }
+
+    private static Color getRandomColor() {
+        return colors[MathUtils.random(0, colors.length-1)];
     }
 }

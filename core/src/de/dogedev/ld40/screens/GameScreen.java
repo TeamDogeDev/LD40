@@ -1,6 +1,7 @@
 package de.dogedev.ld40.screens;
 
 import box2dLight.ConeLight;
+import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -95,7 +96,7 @@ public class GameScreen extends ScreenAdapter {
 
 
         ashley.addSystem(new PhysicsSystem(world, 1));
-        ashley.addSystem(new EnemySpawnSystem(0.5f, 3, world));
+        ashley.addSystem(new EnemySpawnSystem(0.5f, 3, world, rayHandler));
         ashley.addSystem(new HealthSystem());
 
         world.setContactListener(new AshleyB2DContactListener());
@@ -222,8 +223,8 @@ public class GameScreen extends ScreenAdapter {
         if (dirtyEntities.size() > 0) {
             for (Entity entity : dirtyEntities) {
                 if (ComponentMappers.physics.has(entity)) {
-                    if(ComponentMappers.physics.get(entity).light != null){
-                        ComponentMappers.physics.get(entity).light.remove();
+                    for(Light light : ComponentMappers.physics.get(entity).lights) {
+                        light.remove();
                     }
                     world.destroyBody(ComponentMappers.physics.get(entity).body);
                 }

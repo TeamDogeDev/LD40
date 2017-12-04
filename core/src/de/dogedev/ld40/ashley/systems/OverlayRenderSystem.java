@@ -65,8 +65,8 @@ public class OverlayRenderSystem extends EntitySystem {
             pc = ComponentMappers.position.get(e);
             batch.draw(shieldTexture, pc.x-shieldTexture.getWidth()/2, pc.y-Statics.asset.getTexture(Textures.SHIELD).getHeight()/2);
         }
-        font.setColor(Color.RED);
-        font.draw(batch, "Points: N/A", 0, font.getLineHeight());
+//        font.setColor(new Color(0xff000055));
+//        font.draw(batch, "Points: N/A", 500, 500);
         batch.end();
     }
 }
