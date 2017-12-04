@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import de.dogedev.ld40.LDGame;
 import de.dogedev.ld40.Statics;
 import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
@@ -252,7 +253,10 @@ public class GameScreen extends ScreenAdapter {
         // remove dirty entities
         if (dirtyEntities.size() > 0) {
             for (Entity entity : dirtyEntities) {
-                if (ComponentMappers.physics.has(entity)) {
+                if(ComponentMappers.player.has(entity)) {
+                    // Game Over;
+                    LDGame.game.setCurrentScreen(new MenuScreen());
+                } else if (ComponentMappers.physics.has(entity)) {
                     for(Light light : ComponentMappers.physics.get(entity).lights) {
                         light.remove();
                     }
