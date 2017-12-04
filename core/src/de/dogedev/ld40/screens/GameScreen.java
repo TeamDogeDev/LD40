@@ -127,7 +127,7 @@ public class GameScreen extends ScreenAdapter {
 //        EntityFactory.createEnemy(world, new Vector2(10, 50), 0 * MathUtils.degreesToRadians, 0, rayHandler);
 
 
-        Entity player = EntityFactory.createPlayer(world, new Vector2(50, 50), 0, rayHandler);
+        Entity player = EntityFactory.createPlayer(world, new Vector2((Gdx.graphics.getWidth()/ 2 ) / PhysicsSystem.PIXEL_PER_METER, (Gdx.graphics.getHeight()/2) / PhysicsSystem.PIXEL_PER_METER), 0, rayHandler);
         physicsComponent = ComponentMappers.physics.get(player);
 
         engineLight = new ConeLight(rayHandler, 4, new Color(1, 1, 1, 1), 30, 0, 0, 180, 15);
@@ -267,7 +267,7 @@ public class GameScreen extends ScreenAdapter {
             for (Entity entity : dirtyEntities) {
                 if(ComponentMappers.player.has(entity)) {
                     // Game Over;
-                    LDGame.game.setCurrentScreen(new MenuScreen());
+                    LDGame.game.setCurrentScreen(new GameOverScreen());
                 } else if (ComponentMappers.physics.has(entity)) {
                     for(Light light : ComponentMappers.physics.get(entity).lights) {
                         light.remove();
