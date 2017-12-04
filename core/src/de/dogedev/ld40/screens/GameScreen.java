@@ -141,6 +141,7 @@ public class GameScreen extends ScreenAdapter {
 
     float timeInS = 50.0f;
     float deltaSum = Float.MAX_VALUE;
+    float deltaSum2 = Float.MAX_VALUE;
 
 
     @Override
@@ -166,6 +167,7 @@ public class GameScreen extends ScreenAdapter {
 
 
         deltaSum+=delta;
+        deltaSum2+=delta;
         if (Gdx.input.isTouched()) {
             if(deltaSum > 0.2){
                 Vector2 angleDiff = new Vector2(3, 0);
@@ -193,6 +195,13 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             physicsComponent.body.applyForceToCenter(new Vector2(0, 400).rotateRad(physicsComponent.body.getAngle()), true);
             engine = true;
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.A)||Gdx.input.isKeyJustPressed(Input.Keys.D)){
+            if(deltaSum2 > 2){
+                SoundManager.playShipRotate();
+                deltaSum2 = 0;
+            }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 //            physicsComponent.body.applyForceToCenter(new Vector2(-400, 0), true);

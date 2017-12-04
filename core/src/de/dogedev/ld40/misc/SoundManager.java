@@ -13,8 +13,13 @@ public class SoundManager {
     private static Music engineStart2;
     private static Music engineRunning;
     private static Music engineSlowdown;
+
     private static Music music;
+
     private static Sound shot;
+    private static Sound hit;
+    private static Sound rock;
+    private static Sound ship;
 
     public static boolean engineOn = false;
 
@@ -24,9 +29,29 @@ public class SoundManager {
         engineStart = Gdx.audio.newMusic(Gdx.files.internal("sounds/98630__robinhood76__01820-futuristic-space-foley.ogg"));
         engineStart2 = Gdx.audio.newMusic(Gdx.files.internal("sounds/98630__robinhood76__01820-futuristic-space-foley_end.ogg"));
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/the_calling_loop.mp3"));
-        shot = Gdx.audio.newSound(Gdx.files.internal("sounds/shot.ogg"));
+        shot = Gdx.audio.newSound(Gdx.files.internal("sounds/shot2.ogg"));
+        rock = Gdx.audio.newSound(Gdx.files.internal("sounds/impact_rock.ogg"));
+        ship = Gdx.audio.newSound(Gdx.files.internal("sounds/ship_hit.ogg"));
+        hit = Gdx.audio.newSound(Gdx.files.internal("sounds/shot_hit.ogg"));
 
         engineSlowdown.setVolume(0.17f);
+    }
+
+    public static void playAsteroidExplosion(){
+        rock.play();
+    }
+
+    public static void playBulletHit(){
+        hit.play();
+    }
+
+    public static void playShipHit(){
+        hit.play();
+    }
+
+
+    public static void playShipRotate(){
+        ship.play();
     }
 
     public static void playShotSound(){
