@@ -105,6 +105,7 @@ public class GameScreen extends ScreenAdapter {
         ashley.addSystem(new PhysicsSystem(world, 1));
         ashley.addSystem(enemySpawnSystem);
         ashley.addSystem(new HealthSystem());
+        ashley.addSystem(new BulletSystem());
 
         ScoreManager.init(enemySpawnSystem);
 
