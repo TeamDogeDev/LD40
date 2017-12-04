@@ -67,8 +67,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void init() {
 
-        SoundManager.stopMusic();
-        SoundManager.startMusic();
+
 
         ashley.removeAllEntities();
         ashley.getSystems().iterator().forEachRemaining(system -> ashley.removeSystem(system));
@@ -291,7 +290,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        SoundManager.stopMusic();
         rayHandler.dispose();
         backgroundBatch.dispose();
         world.dispose();
