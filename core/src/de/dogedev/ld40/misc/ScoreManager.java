@@ -19,11 +19,15 @@ public class ScoreManager {
         currentTime = 0;
     }
 
+    public static void addDeltaTime(){
+        deltaTime += 1;
+    }
+
     public static void addTime(float delta){
         currentTime += delta;
         deltaTime += delta;
         // 15 seconds
-        if(deltaTime > 5) {
+        if(deltaTime > 10) {
             // Next Phase
             enemySpawnSystem.decreaseUpdateInterval();
             OverlayRenderSystem.flashText();
@@ -32,7 +36,8 @@ public class ScoreManager {
     }
 
     public static void addKill(){
-        currentKills += 1;
+        currentKills += 0.1f;
+        addDeltaTime();
     }
 
     public static int getCurrentKills() {

@@ -2,7 +2,6 @@ package de.dogedev.ld40.ashley.systems;
 
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -66,6 +65,6 @@ public class EnemySpawnSystem extends EntitySystem {
     }
 
     public void decreaseUpdateInterval() {
-//        interval -= 0.1;
+        interval *= 0.9f;
     }
 }
