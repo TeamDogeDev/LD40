@@ -6,7 +6,7 @@ package de.dogedev.ld40.misc;
 public class ScoreManager {
 
     private static int currentKills;
-    private static int currentTime;
+    private static float currentTime;
 
     public static void init(){
         currentKills = 0;
@@ -26,7 +26,7 @@ public class ScoreManager {
     }
 
     public static int getCurrentTime() {
-        return currentTime;
+        return (int) currentTime;
     }
 
 }

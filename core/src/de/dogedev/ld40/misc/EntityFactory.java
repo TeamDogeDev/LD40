@@ -5,6 +5,7 @@ import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -49,6 +50,13 @@ public class EntityFactory {
     };
 
     public static Entity createEnemy(World world, Vector2 position, float angleRad, float force, RayHandler rayHandler) {
+
+        boolean b = MathUtils.randomBoolean();
+
+        Textures asteroid = Textures.ASTEROID_1;
+
+        if(b) asteroid = Textures.ASTEROID_2;
+
         Entity entity = ashley.createEntity();
         BodyDef entityBody = new BodyDef();
         entityBody.type = BodyDef.BodyType.DynamicBody;
@@ -84,7 +92,7 @@ public class EntityFactory {
 
         PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
-        renderComponent.region = asset.getTextureRegion(Textures.ASTEROID_2);
+        renderComponent.region = asset.getTextureRegion(asteroid);
 
         HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
         DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);

@@ -183,9 +183,7 @@ public class GameScreen extends ScreenAdapter {
 
         }
 
-        for(AbstractOverlay overlay : overlays) {
-            overlay.render(delta);
-        }
+
 
 
         boolean engine = false;
@@ -233,6 +231,10 @@ public class GameScreen extends ScreenAdapter {
             engineLight.setConeDegree(30);
             engineLight.setActive(false);
             SoundManager.stopEngine();
+        }
+
+        for(AbstractOverlay overlay : overlays) {
+            overlay.render(delta);
         }
 
         // remove dirty entities
