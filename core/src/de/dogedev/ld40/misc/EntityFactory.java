@@ -216,40 +216,6 @@ public class EntityFactory {
         return entity;
     }
 
-    public static Entity createBase(World world, Vector2 position, float angleRad) {
-        Entity entity = ashley.createEntity();
-
-        BodyDef entityBody = new BodyDef();
-        entityBody.type = BodyDef.BodyType.StaticBody;
-        entityBody.position.set(position);
-        entityBody.angle = angleRad;
-
-        CircleShape entityShape = new CircleShape();
-        entityShape.setRadius(10f / 2);
-
-        FixtureDef entityFixture = new FixtureDef();
-        entityFixture.shape = entityShape;
-        entityFixture.density = .1f;
-
-        PhysicsComponent physicsComponent = ashley.createComponent(PhysicsComponent.class);
-        physicsComponent.body = world.createBody(entityBody);
-        physicsComponent.body.createFixture(entityFixture);
-        physicsComponent.body.setUserData(entity);
-
-        entityShape.dispose();
-
-        PositionComponent positionComponent = ashley.createComponent(PositionComponent.class);
-        RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
-        renderComponent.region = asset.getTextureRegion(Textures.BASE);
-
-
-        entity.add(positionComponent);
-        entity.add(renderComponent);
-        entity.add(physicsComponent);
-
-        ashley.addEntity(entity);
-        return entity;
-    }
 
     private static Color getRandomColor() {
         return colors[MathUtils.random(0, colors.length-1)];

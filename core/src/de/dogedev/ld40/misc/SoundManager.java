@@ -16,10 +16,10 @@ public class SoundManager {
     public static boolean engineOn = false;
 
     public static void init(){
-        engineSlowdown = Gdx.audio.newMusic(Gdx.files.internal("241262__lewis100011__sci-fi-engine.ogg"));
-        engineRunning = Gdx.audio.newMusic(Gdx.files.internal("101278__tomlija__air-pump-drone-and-hum.ogg"));
-        engineStart = Gdx.audio.newMusic(Gdx.files.internal("98630__robinhood76__01820-futuristic-space-foley.ogg"));
-        engineStart2 = Gdx.audio.newMusic(Gdx.files.internal("98630__robinhood76__01820-futuristic-space-foley_end.ogg"));
+        engineSlowdown = Gdx.audio.newMusic(Gdx.files.internal("sounds/241262__lewis100011__sci-fi-engine.ogg"));
+        engineRunning = Gdx.audio.newMusic(Gdx.files.internal("sounds/101278__tomlija__air-pump-drone-and-hum.ogg"));
+        engineStart = Gdx.audio.newMusic(Gdx.files.internal("sounds/98630__robinhood76__01820-futuristic-space-foley.ogg"));
+        engineStart2 = Gdx.audio.newMusic(Gdx.files.internal("sounds/98630__robinhood76__01820-futuristic-space-foley_end.ogg"));
         engineSlowdown.setVolume(0.17f);
     }
 

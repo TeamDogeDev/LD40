@@ -1,14 +1,13 @@
 package de.dogedev.ld40.assets.enums;
 
 public enum Textures {
-    BASE("base.png"),
-    PLAYER("player_outline.png"),
-    BULLET("bullet_outline.png"),
-    ASTEROID_1("asteroid1.png"),
-    ASTEROID_2("asteroid2.png"),
-    ENEMY("enemy.png"),
-    SHIELD("circle.png"),
-    BACKGROUND("background.png");
+    PLAYER("textures/player_outline.png"),
+    BULLET("textures/bullet_outline.png"),
+    ASTEROID_1("textures/asteroid1.png"),
+    ASTEROID_2("textures/asteroid2.png"),
+    ENEMY("textures/enemy.png"),
+    SHIELD("textures/circle.png"),
+    BACKGROUND("textures/background.png");
 
     public String name;
 
