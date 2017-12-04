@@ -24,6 +24,7 @@ public class SoundManager {
     public static boolean engineOn = false;
 
     public static void init(){
+
         engineSlowdown = Gdx.audio.newMusic(Gdx.files.internal("sounds/241262__lewis100011__sci-fi-engine.ogg"));
         engineRunning = Gdx.audio.newMusic(Gdx.files.internal("sounds/101278__tomlija__air-pump-drone-and-hum.ogg"));
         engineStart = Gdx.audio.newMusic(Gdx.files.internal("sounds/98630__robinhood76__01820-futuristic-space-foley.ogg"));
@@ -48,8 +49,7 @@ public class SoundManager {
     public static void playShipHit(){
         hit.play();
     }
-
-
+    
     public static void playShipRotate(){
         ship.play();
     }
