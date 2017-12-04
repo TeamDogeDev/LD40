@@ -5,11 +5,12 @@ import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import de.dogedev.ld40.ashley.components.*;
 import de.dogedev.ld40.assets.enums.Textures;
 
@@ -237,7 +238,7 @@ public class EntityFactory {
         entity.add(colorComponent);
         entity.add(damageComponent);
         entity.add(healthComponent);
-        entity.add(ashley.createComponent(WeakComponent.class));
+//        entity.add(ashley.createComponent(WeakComponent.class));
         entity.add(ashley.createComponent(BulletComponent.class));
         entity.add(positionComponent);
         entity.add(renderComponent);

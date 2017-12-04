@@ -10,6 +10,7 @@ public class ScoreManager {
 
     private static int currentKills;
     private static float currentTime;
+    private static float deltaTime;
     private static EnemySpawnSystem enemySpawnSystem;
 
     public static void init(EnemySpawnSystem enemySpawnSystem){
@@ -20,11 +21,13 @@ public class ScoreManager {
 
     public static void addTime(float delta){
         currentTime += delta;
+        deltaTime += delta;
         // 15 seconds
-        if(((int) currentTime) % 3 == 0) {
+        if(deltaTime > 5) {
             // Next Phase
             enemySpawnSystem.decreaseUpdateInterval();
             OverlayRenderSystem.flashText();
+            deltaTime = 0;
         }
     }
 
