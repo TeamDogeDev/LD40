@@ -10,7 +10,8 @@ public class DesktopLauncher {
 		config.width = 1280;
 		config.height = 720;
 		config.samples = 8;
-		config.title = "LDGame";
+		config.title = "Disco Asteroids";
+		config.resizable = false;
 		new LwjglApplication(new LDGame(), config);
 	}
 }
