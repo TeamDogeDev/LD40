@@ -87,7 +87,7 @@ public class GameScreen extends ScreenAdapter {
         ashley.addSystem(new MovementSystem(2));
         renderSystem = new RenderSystem(camera, 5);
         ashley.addSystem(renderSystem);
-        ashley.addSystem(new DebugUISystem(camera, 6));
+//        ashley.addSystem(new DebugUISystem(camera, 6));
         ashley.addSystem(new OverlayRenderSystem(7));
 
         dirtyEntities = ashley.getEntitiesFor(Family.all(DirtyComponent.class).get());
@@ -183,12 +183,15 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
-//        float a = Gdx.graphics.getWidth()/2;
-//        float b = 1.0f;
-//        float h = 0.0f;
-//        float k = a;
+        float a = (Gdx.graphics.getWidth()/2)/PhysicsSystem.PIXEL_PER_METER;
+        float b = 1.0f;
+        float h = 0.0f;
+        float k = a;
 
-//        redFog.setPosition(a * MathUtils.sin(b*(redFog.getX()-h)) + k, redFog.getY());
+        redFog.setPosition(a * MathUtils.sin(b*(timeInS-h)) + k, redFog.getY());
+        greenFog.setPosition(a * MathUtils.cos(b*(timeInS-h)) + k, greenFog.getY());
+        blueFog.setPosition(a * MathUtils.sin(b*(timeInS-h)) + k, blueFog.getY());
+        yellowFog.setPosition(a * MathUtils.cos(b*(timeInS-h)) + k, yellowFog.getY());
 
         deltaSum+=delta;
         deltaSum2+=delta;

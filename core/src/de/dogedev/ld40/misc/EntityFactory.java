@@ -24,7 +24,7 @@ public class EntityFactory {
     private static float playerDamage = 0.1f;
     private static float enemyHealth = 0.1f;
     private static float enemyDamage = 0.1f;
-    private static float bulletHealth = 0.2f;
+    private static float bulletHealth = 0.5f;
     private static float bulletDamage = 0.1f;
 
 

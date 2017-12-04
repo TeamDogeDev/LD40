@@ -3,6 +3,7 @@ package de.dogedev.ld40.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -24,7 +25,9 @@ public class MenuScreen extends ScreenAdapter {
 
     private Batch batch;
     private Texture background;
+    private Texture title;
     private ShaderProgram backgroundShader;
+    private ShaderProgram titleShader;
     private BitmapFont font;
 
     private Array<String> elements = new Array<>();
@@ -40,9 +43,11 @@ public class MenuScreen extends ScreenAdapter {
     private void init() {
         font = Statics.asset.getFont(BitmapFonts.GAMEFONT);
         background = Statics.asset.getTexture(Textures.BACKGROUND);
+        title = Statics.asset.getTexture(Textures.TITLE);
 
         batch = new SpriteBatch();
         backgroundShader = Statics.asset.getShader(ShaderPrograms.MENU);
+        titleShader = Statics.asset.getShader(ShaderPrograms.GLOW);
         batch.setShader(backgroundShader);
     }
 
@@ -53,8 +58,17 @@ public class MenuScreen extends ScreenAdapter {
         backgroundShader.begin();
         backgroundShader.setUniformf("iTime", timeInS);
         backgroundShader.end();
-    }
 
+        float a = 0.35f;
+        float b = 5;
+        float h = 0;
+        float k = a;
+
+        float value = (a * MathUtils.sin(b * (timeInS - h))) + k;
+        titleShader.begin();
+        titleShader.setUniformf("iIntensity", value);
+        titleShader.end();
+    }
 
     @Override
     public void render(float delta) {
@@ -66,14 +80,18 @@ public class MenuScreen extends ScreenAdapter {
         batch.begin();
         batch.setShader(backgroundShader);
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.setShader(titleShader);
+
+        batch.setColor(new Color(0xffff0055));
+        batch.draw(title, (Gdx.graphics.getWidth()- title.getWidth())/2, Gdx.graphics.getHeight() - title.getHeight()- 50);
         batch.setShader(null);
         int idx = 0;
         for(String s : elements) {
             float additionalOffset = 0.0f;
             if(s.equalsIgnoreCase(selectedMenuPoint)) {
-                additionalOffset = MathUtils.sin(timeInS*3)*20;
+                additionalOffset = MathUtils.sin(timeInS*2)*10;
             }
-            font.draw(batch, s, (Gdx.graphics.getWidth() / 2), 100+(Gdx.graphics.getHeight()/2) - (idx++*(font.getLineHeight()*2) + additionalOffset),
+            font.draw(batch, s, (Gdx.graphics.getWidth() / 2), (Gdx.graphics.getHeight()/2) - (idx++*(font.getLineHeight()*2) + additionalOffset),
                     2, Align.center, false);
         }
         batch.end();
@@ -95,7 +113,6 @@ public class MenuScreen extends ScreenAdapter {
             }
         }
     }
-
 
     @Override
     public void resize(int width, int height) {

@@ -225,7 +225,7 @@ public class OverlayRenderSystem extends EntitySystem {
             flashCounter+= deltaTime;
         }
 
-        if(flashCounter >= 1.0f) {
+        if(flashCounter >= 2.0f) {
             flashTextVisible = false;
             flashCounter = 0.0f;
         }
