@@ -65,8 +65,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void init() {
 
-        SoundManager.init();
-
+        SoundManager.stopMusic();
         SoundManager.startMusic();
 
         ashley.removeAllEntities();
