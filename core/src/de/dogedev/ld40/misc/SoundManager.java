@@ -24,7 +24,7 @@ public class SoundManager {
         engineStart = Gdx.audio.newMusic(Gdx.files.internal("sounds/98630__robinhood76__01820-futuristic-space-foley.ogg"));
         engineStart2 = Gdx.audio.newMusic(Gdx.files.internal("sounds/98630__robinhood76__01820-futuristic-space-foley_end.ogg"));
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/the_calling_loop.mp3"));
-        shot = Gdx.audio.newSound(Gdx.files.internal("sounds/shot.ogg"));
+        shot = Gdx.audio.newSound(Gdx.files.internal("sounds/shot2.ogg"));
 
         engineSlowdown.setVolume(0.17f);
     }
