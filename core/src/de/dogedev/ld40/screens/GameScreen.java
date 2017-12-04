@@ -26,7 +26,6 @@ import de.dogedev.ld40.ashley.ComponentMappers;
 import de.dogedev.ld40.ashley.components.DirtyComponent;
 import de.dogedev.ld40.ashley.components.PhysicsComponent;
 import de.dogedev.ld40.ashley.systems.*;
-import de.dogedev.ld40.assets.ParticlePool;
 import de.dogedev.ld40.assets.enums.ShaderPrograms;
 import de.dogedev.ld40.assets.enums.Textures;
 import de.dogedev.ld40.misc.AshleyB2DContactListener;
@@ -67,6 +66,8 @@ public class GameScreen extends ScreenAdapter {
 
         SoundManager.init();
         ScoreManager.init();
+
+        SoundManager.startMusic();
 
         ashley.removeAllEntities();
         ashley.getSystems().iterator().forEachRemaining(system -> ashley.removeSystem(system));
@@ -178,6 +179,8 @@ public class GameScreen extends ScreenAdapter {
                 angleDiff.setAngle(physicsComponent.body.getAngle() * MathUtils.radiansToDegrees + 70);
                 EntityFactory.createBullet(world, physicsComponent.body.getPosition().add(angleDiff), physicsComponent.body.getAngle()-0.1f, 50, rayHandler);
 
+                SoundManager.playShotSound();
+
                 deltaSum = 0;
             }
 
@@ -263,6 +266,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        SoundManager.stopMusic();
         rayHandler.dispose();
         backgroundBatch.dispose();
         world.dispose();
