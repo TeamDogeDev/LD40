@@ -20,8 +20,13 @@ import static de.dogedev.ld40.Statics.asset;
 
 public class EntityFactory {
 
-    public static void createPlayer() {
-    }
+    private static float playerHealth = 1.0f;
+    private static float playerDamage = 0.1f;
+    private static float enemyHealth = 0.1f;
+    private static float enemyDamage = 0.1f;
+    private static float bulletHealth = 0.2f;
+    private static float bulletDamage = 0.1f;
+
 
     static float[] shipVertices = {
             -3.0f, -0.6f,
@@ -89,7 +94,6 @@ public class EntityFactory {
 
         PolygonShape entityShape = new PolygonShape();
         entityShape.set(asteroidTexture2Vertices(asteroidTexture));
-//        entityShape.setAsBox(7.1f / 2, 6.4f / 2);
 
         FixtureDef entityFixture = new FixtureDef();
         entityFixture.shape = entityShape;
@@ -100,11 +104,8 @@ public class EntityFactory {
         physicsComponent.body.createFixture(entityFixture);
         physicsComponent.body.setUserData(entity);
         physicsComponent.body.applyLinearImpulse(position.nor().scl(force), position.setAngleRad(angleRad + MathUtils.PI / 2), true);
-//        physicsComponent.body.setAngularDamping(30000);
-//        physicsComponent.body.setLinearDamping(30000);
         physicsComponent.body.setAngularVelocity(1);
         entityShape.dispose();
-
 
         // Pick random color
         Color c = getRandomColor();
@@ -119,8 +120,9 @@ public class EntityFactory {
         renderComponent.region = asset.getTextureRegion(asteroidTexture);
 
         HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+        healthComponent.health = enemyHealth;
         DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
-        damageComponent.damage = 1.0f;
+        damageComponent.damage = enemyDamage;
 
         ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
         colorComponent.color = c;
@@ -175,9 +177,15 @@ public class EntityFactory {
         RenderComponent renderComponent = ashley.createComponent(RenderComponent.class);
         renderComponent.region = asset.getTextureRegion(Textures.PLAYER);
 
-//        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+        HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+        healthComponent.health = playerHealth;
 
-//        entity.add(healthComponent);
+        DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
+        damageComponent.damage = playerDamage;
+
+        entity.add(healthComponent);
+        entity.add(damageComponent);
+
         ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
         colorComponent.color = new Color(0x00ff0099);
 
@@ -229,8 +237,9 @@ public class EntityFactory {
         renderComponent.region = asset.getTextureRegion(Textures.BULLET);
 
         HealthComponent healthComponent = ashley.createComponent(HealthComponent.class);
+        healthComponent.health = bulletHealth;
         DamageComponent damageComponent = ashley.createComponent(DamageComponent.class);
-        damageComponent.damage = 1.0f;
+        damageComponent.damage = bulletDamage;
 
         ColorComponent colorComponent = ashley.createComponent(ColorComponent.class);
         colorComponent.color = Color.YELLOW;

@@ -39,8 +39,6 @@ public class EnemySpawnSystem extends EntitySystem {
     }
 
     private void updateInterval() {
-
-        System.out.println("UPDATE");
         int xPosition = 0;
         int yPosition = 0;
 
