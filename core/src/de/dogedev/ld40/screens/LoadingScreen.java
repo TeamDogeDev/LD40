@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.dogedev.ld40.LDGame;
 import de.dogedev.ld40.Statics;
+import de.dogedev.ld40.misc.SoundManager;
 
 public class LoadingScreen extends ScreenAdapter {
 
@@ -22,6 +23,7 @@ public class LoadingScreen extends ScreenAdapter {
 
     private void update(float delta) {
         if(Statics.asset.load()) {
+            SoundManager.startMusic();
             LDGame.game.setCurrentScreen(new MenuScreen());
         }
     }
