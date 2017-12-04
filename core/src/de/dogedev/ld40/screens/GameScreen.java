@@ -59,6 +59,10 @@ public class GameScreen extends ScreenAdapter {
     private ConeLight engineLight;
 
     private Array<AbstractOverlay> overlays = new Array<>();
+    private PointLight redFog;
+    private PointLight yellowFog;
+    private PointLight blueFog;
+    private PointLight greenFog;
 
 
     public GameScreen() {
@@ -102,10 +106,11 @@ public class GameScreen extends ScreenAdapter {
         rayHandler2 = new RayHandler(new World(new Vector2(0, 0), true));
         rayHandler2.setShadows(false);
         rayHandler2.setBlurNum(3);
-        new PointLight(rayHandler2, 128, new Color(0xff000055), 200, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER , Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER);
-        new PointLight(rayHandler2, 128, new Color(0xffff0033), 200, 0, 0);
-        new PointLight(rayHandler2, 128, new Color(0x0000ff33), 200, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER, 0);
-        new PointLight(rayHandler2, 128, new Color(0x00ff0033), 200, 0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER);
+        redFog = new PointLight(rayHandler2, 128, new Color(0xff000055), 200, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER);
+        yellowFog = new PointLight(rayHandler2, 128, new Color(0xffff0033), 200, 0, 0);
+        blueFog = new PointLight(rayHandler2, 128, new Color(0x0000ff33), 200, Gdx.graphics.getWidth() / PhysicsSystem.PIXEL_PER_METER, 0);
+        greenFog = new PointLight(rayHandler2, 128, new Color(0x00ff0033), 200, 0, Gdx.graphics.getHeight() / PhysicsSystem.PIXEL_PER_METER);
+
 
 //        DirectionalLight directionalLight = new DirectionalLight(rayHandler, 512, new Color(0,0.01f,0.01f,0.5f), +250);
 
@@ -178,7 +183,12 @@ public class GameScreen extends ScreenAdapter {
         rayHandler.setCombinedMatrix(debugCamera);
         rayHandler.updateAndRender();
 
+//        float a = Gdx.graphics.getWidth()/2;
+//        float b = 1.0f;
+//        float h = 0.0f;
+//        float k = a;
 
+//        redFog.setPosition(a * MathUtils.sin(b*(redFog.getX()-h)) + k, redFog.getY());
 
         deltaSum+=delta;
         deltaSum2+=delta;
