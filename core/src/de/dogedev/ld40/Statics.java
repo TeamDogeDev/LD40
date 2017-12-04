@@ -3,6 +3,7 @@ package de.dogedev.ld40;
 import com.badlogic.ashley.core.PooledEngine;
 import de.dogedev.ld40.assets.AssetLoader;
 import de.dogedev.ld40.assets.ParticlePool;
+import de.dogedev.ld40.misc.SoundManager;
 
 public class Statics {
 
@@ -15,5 +16,6 @@ public class Statics {
         asset = new AssetLoader();
         ashley = new PooledEngine();
         particle = new ParticlePool();
+        SoundManager.init();
     }
 }
