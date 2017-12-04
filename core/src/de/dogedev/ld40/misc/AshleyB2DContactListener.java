@@ -42,8 +42,6 @@ public class AshleyB2DContactListener implements ContactListener {
 
             if(ComponentMappers.asteroid.has(first) && ComponentMappers.bullet.has(second)) {
                 // first: asteroid <-> second: bullet
-<<<<<<< HEAD
-=======
                 ScoreManager.addKill();
                 SoundManager.playBulletHit();
                 SoundManager.playAsteroidExplosion();
@@ -56,11 +54,8 @@ public class AshleyB2DContactListener implements ContactListener {
                 SoundManager.playAsteroidExplosion();
             }
 
-            HealthComponent healthComponent;
-            DamageComponent damageComponent;
 
             if(ComponentMappers.health.has(first) && ComponentMappers.damage.has(second)) {
->>>>>>> e883d7daac0cb75d1aa63a05c0b31008194040b4
                 healthComponent = ComponentMappers.health.get(first);
                 damageComponent = ComponentMappers.damage.get(second);
 
